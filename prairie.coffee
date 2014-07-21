@@ -11,18 +11,24 @@ module.exports = (item, field_info, key) ->
 
   # Fresh copy of field_info so we can hack at it.
   field_info = _.cloneDeep field_info
-  # The primary key field.
-  if key
-    unless item[key]
-      console.log 'item no key '+key
-      console.log item
-      return false
 
+  # The primary key field.
+  unless key
+    # Try to find the primary key field if it is not set.
+    if item.id
+      key = 'id' # most common.
+    else if item._id
+      key = '_id'
+    else if item.pk
+      key = 'pk' # this might be removed in the future.
+  if key and item[key]
     # Special fields.
     if field_info.dir_i == true
       unless item.dirname
         item.dirname = _.dirname item[key]
-        delete field_info.dirname
+        # If this was one of the fields we can delete it now.
+        if field_info.dirname == true
+          delete field_info.dirname
       item = _.merge item, _.dir_i(item.dirname)
       delete field_info.dir_i
 
@@ -31,11 +37,9 @@ module.exports = (item, field_info, key) ->
       if _.isFunction _[field_id]
         if not key
           console.log 'No primary key!'
-        field = {func: field_id, arg: key}
-      else
-      #   console.log 'not a func ' + field_id
+        field = {func: field_id, arg_field: key}
     if _.isString field
-      item[field_id] = @token_replace field, item
+      item[field_id] = _token_replace field, item
     else if _.isNumber field
       item[field_id] = field
     else if _.isObject field
@@ -48,14 +52,14 @@ module.exports = (item, field_info, key) ->
           if item[field.arg.string]
             field.arg.string = item[field.arg.string]
           else
-            tre = @token_replace field.arg.string, {}
-            tr = @token_replace field.arg.string, item
+            tre = _.token_replace field.arg.string, {}
+            tr = _.token_replace field.arg.string, item
             if tr and tr != field.arg.string and tr != tre
               field.arg.string = tr
             else
               field.arg.string = null
       if _.isObject field.arg
-        field.arg = @token_replace field.arg, item
+        field.arg = _.token_replace field.arg, item
       unless field.app
         field.app = 'map'
       unless field.func
@@ -74,7 +78,7 @@ module.exports = (item, field_info, key) ->
         delete field.app
         delete field.map
         delete field.func
-        field_overlay = @token_replace(field, item)
+        field_overlay = _.token_replace(field, item)
         if item[field_id]
           item[field_id] = _.merge item[field_id], field_overlay
         else

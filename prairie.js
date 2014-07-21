@@ -12,16 +12,22 @@ module.exports = function(item, field_info, key) {
     return item;
   }
   field_info = _.cloneDeep(field_info);
-  if (key) {
-    if (!item[key]) {
-      console.log('item no key ' + key);
-      console.log(item);
-      return false;
+  if (!key) {
+    if (item.id) {
+      key = 'id';
+    } else if (item._id) {
+      key = '_id';
+    } else if (item.pk) {
+      key = 'pk';
     }
+  }
+  if (key && item[key]) {
     if (field_info.dir_i === true) {
       if (!item.dirname) {
         item.dirname = _.dirname(item[key]);
-        delete field_info.dirname;
+        if (field_info.dirname === true) {
+          delete field_info.dirname;
+        }
       }
       item = _.merge(item, _.dir_i(item.dirname));
       delete field_info.dir_i;
@@ -36,14 +42,12 @@ module.exports = function(item, field_info, key) {
         }
         field = {
           func: field_id,
-          arg: key
+          arg_field: key
         };
-      } else {
-
       }
     }
     if (_.isString(field)) {
-      return item[field_id] = _this.token_replace(field, item);
+      return item[field_id] = _token_replace(field, item);
     } else if (_.isNumber(field)) {
       return item[field_id] = field;
     } else if (_.isObject(field)) {
@@ -56,8 +60,8 @@ module.exports = function(item, field_info, key) {
           if (item[field.arg.string]) {
             field.arg.string = item[field.arg.string];
           } else {
-            tre = _this.token_replace(field.arg.string, {});
-            tr = _this.token_replace(field.arg.string, item);
+            tre = _.token_replace(field.arg.string, {});
+            tr = _.token_replace(field.arg.string, item);
             if (tr && tr !== field.arg.string && tr !== tre) {
               field.arg.string = tr;
             } else {
@@ -67,7 +71,7 @@ module.exports = function(item, field_info, key) {
         }
       }
       if (_.isObject(field.arg)) {
-        field.arg = _this.token_replace(field.arg, item);
+        field.arg = _.token_replace(field.arg, item);
       }
       if (!field.app) {
         field.app = 'map';
@@ -93,7 +97,7 @@ module.exports = function(item, field_info, key) {
         delete field.app;
         delete field.map;
         delete field.func;
-        field_overlay = _this.token_replace(field, item);
+        field_overlay = _.token_replace(field, item);
         if (item[field_id]) {
           return item[field_id] = _.merge(item[field_id], field_overlay);
         } else {
