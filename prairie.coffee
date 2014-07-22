@@ -20,10 +20,11 @@ seed = (item, field, field_id) ->
     grow item, field1, field_id
     unless _.isEmpty field
       _.each field, (field_func) ->
-        if field_func.string == true
-          field_func.string = item[field_id]
-        else if field_func.arg == true
+        if field_func.arg == true
           field_func.arg = item[field_id]
+        else if field_func.arg.string == true
+          field_func.arg.string = item[field_id]
+        #console.log field_func
         grow item, field_func, field_id
 
   # The function returns the value of the new field.
@@ -39,19 +40,21 @@ grow = (item, field, field_id) ->
     if _.isString(field.arg) and item[field.arg]
       field.arg = item[field.arg]
     else if field.arg.string
+      # Replace value of string field with field from item.
       if item[field.arg.string]
         field.arg.string = item[field.arg.string]
-      else
+      else # Check to see if it has mustache.
+        # Value after processing for mustache with empty variables.
         tre = _.token_replace field.arg.string, {}
+        # Value after processing with full variables.
         tr = _.token_replace field.arg.string, item
+        # The string has changed and it is not the same as when empty variables.
         if tr and tr != field.arg.string and tr != tre
           field.arg.string = tr
-        else
-          field.arg.string = null
   # A field arg can be an object of string templates.
   # Why is this happening here?!?!?! >:-( Think about moving it.
-  if _.isObject(field.arg) and (field.arg.string or field.arg.path) and not _.isArray(field.arg)
-    field.arg = _.token_replace field.arg, item
+  # if _.isObject(field.arg) and (field.arg.string or field.arg.path) and not _.isArray(field.arg)
+  #   field.arg = _.token_replace field.arg, item
   # @todo. Allow this module to require other modules based on 'app' field.
   unless field.app
     field.app = 'map'
@@ -59,6 +62,7 @@ grow = (item, field, field_id) ->
     field.func = field_id
   if 'map' == field.app and _.isFunction _[field.func]
     item[field_id] = _[field.func] field.arg
+    # console.log item[field_id]
   # Filtering?!? Here? What for?
   # else if field.filter
   #   if @filter(item, field.filter)
@@ -68,7 +72,8 @@ grow = (item, field, field_id) ->
   #       item = @field item, field.field, key
   #     if field.rename
   #       item = @rename item, field.rename
-  else # Please describe what this does.
+  else # Please describe what this does!
+    console.log 'did not find function '+field.func
     delete field.app
     delete field.map
     delete field.func

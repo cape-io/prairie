@@ -20,10 +20,10 @@ seed = function(item, field, field_id) {
     grow(item, field1, field_id);
     if (!_.isEmpty(field)) {
       return _.each(field, function(field_func) {
-        if (field_func.string === true) {
-          field_func.string = item[field_id];
-        } else if (field_func.arg === true) {
+        if (field_func.arg === true) {
           field_func.arg = item[field_id];
+        } else if (field_func.arg.string === true) {
+          field_func.arg.string = item[field_id];
         }
         return grow(item, field_func, field_id);
       });
@@ -49,14 +49,9 @@ grow = function(item, field, field_id) {
         tr = _.token_replace(field.arg.string, item);
         if (tr && tr !== field.arg.string && tr !== tre) {
           field.arg.string = tr;
-        } else {
-          field.arg.string = null;
         }
       }
     }
-  }
-  if (_.isObject(field.arg) && (field.arg.string || field.arg.path) && !_.isArray(field.arg)) {
-    field.arg = _.token_replace(field.arg, item);
   }
   if (!field.app) {
     field.app = 'map';
@@ -67,6 +62,7 @@ grow = function(item, field, field_id) {
   if ('map' === field.app && _.isFunction(_[field.func])) {
     return item[field_id] = _[field.func](field.arg);
   } else {
+    console.log('did not find function ' + field.func);
     delete field.app;
     delete field.map;
     delete field.func;
