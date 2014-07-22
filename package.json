@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/sundaysenergy/prairie.git"
+    "url": "git://github.com/cape-io/prairie.git"
   },
   "keywords": [
     "cape",
@@ -18,9 +18,9 @@
   "author": "Kai Curry <kai@cape.io> (http://www.cape.io/)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sundaysenergy/prairie/issues"
+    "url": "https://github.com/cape-io/prairie/issues"
   },
-  "homepage": "https://github.com/sundaysenergy/prairie",
+  "homepage": "https://github.com/cape-io/prairie",
   "dependencies": {
     "understory": "^0.1.1"
   },
