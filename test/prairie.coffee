@@ -20,7 +20,10 @@ describe 'prairie', () ->
   it 'Has access to lodash functions such as _.first()', () ->
     new_item.should.have.property('thing').and.equal("Fancy Name'")
 
+  it 'Handle string_replace correctly.', () ->
+    prairie(data.item, data.field_t_rep).should.have.property('template').and.equal('Green Tree')
+
   it 'Allows an array to be sent as a field description. Processes each one in succession.', () ->
     new_item = prairie(data.item, data.field_arr)
     #console.log new_item
-    new_item.should.have.property('name').and.equal('Fancy Namé')
+    new_item.should.have.property('name').and.equal('Green, Blué')

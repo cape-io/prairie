@@ -20,6 +20,10 @@ seed = (item, field, field_id) ->
     grow item, field1, field_id
     unless _.isEmpty field
       _.each field, (field_func) ->
+        if _.isString field_func
+          field_func = {func: field_func, arg: true}
+        unless field_func.arg
+          field_func.arg = true
         if field_func.arg == true
           field_func.arg = item[field_id]
         else if field_func.arg.string == true
@@ -39,39 +43,26 @@ grow = (item, field, field_id) ->
   else if field.arg
     if _.isString(field.arg) and item[field.arg]
       field.arg = item[field.arg]
-    else if field.arg.string
-      # Replace value of string field with field from item.
-      if item[field.arg.string]
-        field.arg.string = item[field.arg.string]
-      else # Check to see if it has mustache.
-        # Value after processing for mustache with empty variables.
-        tre = _.token_replace field.arg.string, {}
-        # Value after processing with full variables.
-        tr = _.token_replace field.arg.string, item
-        # The string has changed and it is not the same as when empty variables.
-        if tr and tr != field.arg.string and tr != tre
-          field.arg.string = tr
-  # A field arg can be an object of string templates.
-  # Why is this happening here?!?!?! >:-( Think about moving it.
-  # if _.isObject(field.arg) and (field.arg.string or field.arg.path) and not _.isArray(field.arg)
-  #   field.arg = _.token_replace field.arg, item
+    # Replace value of string field with field from item.
+    else if _.isString(field.arg.string) and item[field.arg.string]
+      field.arg.string = item[field.arg.string]
+
   # @todo. Allow this module to require other modules based on 'app' field.
   unless field.app
     field.app = 'map'
   unless field.func
     field.func = field_id
+
+
   if 'map' == field.app and _.isFunction _[field.func]
-    item[field_id] = _[field.func] field.arg
-    # console.log item[field_id]
-  # Filtering?!? Here? What for?
-  # else if field.filter
-  #   if @filter(item, field.filter)
-  #     if field.default
-  #       item = _.defaults item, field.default
-  #     if field.field and key
-  #       item = @field item, field.field, key
-  #     if field.rename
-  #       item = @rename item, field.rename
+    # Special functions
+    if 'token_replace' == field.func
+      item[field_id] = _.token_replace(field.arg, item)
+    else if 'join' == field.func and _.isArray field.arg
+      item[field_id] = field.arg.join(field.join_with)
+    else
+      item[field_id] = _[field.func] field.arg
+
   else # Please describe what this does!
     console.log 'did not find function '+field.func
     delete field.app

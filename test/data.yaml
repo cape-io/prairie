@@ -1,0 +1,43 @@
+---
+item:
+  path: 'one/folder/two/sam.txt'
+  descriptions:
+    - Fancy Name'
+    - Normal blah
+  bob: Blue'
+  cat: Green
+  dog: Tree
+
+field:
+  dir_i: true
+  thing:
+    func: first
+    arg_field: descriptions
+
+field_t_rep:
+  template:
+    arg: '{{cat}} {{dog}}'
+    func: token_replace
+
+field_arr:
+  name:
+    -
+      arg: '{{cat}}, , {{cat}}, {{&bob}}'
+      func: token_replace
+    -
+      func: string_replace
+      arg:
+        string: true
+        regex: "e'$"
+        replace: 'é'
+    -
+      func: split
+      arg:
+        string: true
+        split_on: ','
+        trim: true
+    - compact
+    - unique
+    -
+      func: join
+      join_with: ', '

@@ -20,6 +20,15 @@ seed = function(item, field, field_id) {
     grow(item, field1, field_id);
     if (!_.isEmpty(field)) {
       return _.each(field, function(field_func) {
+        if (_.isString(field_func)) {
+          field_func = {
+            func: field_func,
+            arg: true
+          };
+        }
+        if (!field_func.arg) {
+          field_func.arg = true;
+        }
         if (field_func.arg === true) {
           field_func.arg = item[field_id];
         } else if (field_func.arg.string === true) {
@@ -34,23 +43,15 @@ seed = function(item, field, field_id) {
 };
 
 grow = function(item, field, field_id) {
-  var field_overlay, tr, tre;
+  var field_overlay;
   if (field.arg_field && item[field.arg_field]) {
     field.arg = item[field.arg_field];
     delete field.arg_field;
   } else if (field.arg) {
     if (_.isString(field.arg) && item[field.arg]) {
       field.arg = item[field.arg];
-    } else if (field.arg.string) {
-      if (item[field.arg.string]) {
-        field.arg.string = item[field.arg.string];
-      } else {
-        tre = _.token_replace(field.arg.string, {});
-        tr = _.token_replace(field.arg.string, item);
-        if (tr && tr !== field.arg.string && tr !== tre) {
-          field.arg.string = tr;
-        }
-      }
+    } else if (_.isString(field.arg.string) && item[field.arg.string]) {
+      field.arg.string = item[field.arg.string];
     }
   }
   if (!field.app) {
@@ -60,7 +61,13 @@ grow = function(item, field, field_id) {
     field.func = field_id;
   }
   if ('map' === field.app && _.isFunction(_[field.func])) {
-    return item[field_id] = _[field.func](field.arg);
+    if ('token_replace' === field.func) {
+      return item[field_id] = _.token_replace(field.arg, item);
+    } else if ('join' === field.func && _.isArray(field.arg)) {
+      return item[field_id] = field.arg.join(field.join_with);
+    } else {
+      return item[field_id] = _[field.func](field.arg);
+    }
   } else {
     console.log('did not find function ' + field.func);
     delete field.app;
