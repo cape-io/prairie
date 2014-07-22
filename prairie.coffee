@@ -74,7 +74,7 @@ grow = (item, field, field_id) ->
       item[field_id] = field_overlay
 
 # Fields in the `values` object MUST match ALL `required` object fields.
-module.exports = (item, field_info, key) ->
+module.exports = (item, field_info, key = false) ->
   # We only care about adding fields to an object.
   unless _.isObject(item) and not _.isArray(item)
     return item
@@ -89,12 +89,11 @@ module.exports = (item, field_info, key) ->
   unless key
     # Try to find the primary key field if it is not set.
     try_keys = ['id', '_id', 'path', 'pk']
-    if item.id
-      key = 'id' # most common.
-    else if item._id
-      key = '_id'
-    else if item.pk
-      key = 'pk' # this might be removed in the future.
+    _.each try_keys, (try_key) ->
+      if item[try_key]
+        key = try_key
+        return false
+
   if key and item[key]
     # Special fields.
     if field_info.dir_i == true

@@ -93,6 +93,9 @@ grow = function(item, field, field_id) {
 module.exports = function(item, field_info, key) {
   var try_keys,
     _this = this;
+  if (key == null) {
+    key = false;
+  }
   if (!(_.isObject(item) && !_.isArray(item))) {
     return item;
   }
@@ -102,13 +105,12 @@ module.exports = function(item, field_info, key) {
   field_info = _.cloneDeep(field_info);
   if (!key) {
     try_keys = ['id', '_id', 'path', 'pk'];
-    if (item.id) {
-      key = 'id';
-    } else if (item._id) {
-      key = '_id';
-    } else if (item.pk) {
-      key = 'pk';
-    }
+    _.each(try_keys, function(try_key) {
+      if (item[try_key]) {
+        key = try_key;
+        return false;
+      }
+    });
   }
   if (key && item[key]) {
     if (field_info.dir_i === true) {
