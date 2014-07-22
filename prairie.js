@@ -4,7 +4,7 @@ var grow, seed, _;
 _ = require('understory');
 
 seed = function(item, field, field_id) {
-  var first_value;
+  var field1;
   if (field === true && _.isFunction(_[field_id]) && key) {
     field = {
       func: field_id,
@@ -16,14 +16,14 @@ seed = function(item, field, field_id) {
   } else if (_.isNumber(field)) {
     return item[field_id] = field;
   } else if (_.isArray(field)) {
-    grow(item, field.shift(), field_id);
+    field1 = field.shift();
+    grow(item, field1, field_id);
     if (!_.isEmpty(field)) {
-      first_value = item[field_id];
       return _.each(field, function(field_func) {
         if (field_func.string === true) {
-          field_func.string = first_value;
+          field_func.string = item[field_id];
         } else if (field_func.arg === true) {
-          field_func.arg = first_value;
+          field_func.arg = item[field_id];
         }
         return grow(item, field_func, field_id);
       });
@@ -37,6 +37,7 @@ grow = function(item, field, field_id) {
   var field_overlay, tr, tre;
   if (field.arg_field && item[field.arg_field]) {
     field.arg = item[field.arg_field];
+    delete field.arg_field;
   } else if (field.arg) {
     if (_.isString(field.arg) && item[field.arg]) {
       field.arg = item[field.arg];
@@ -54,7 +55,7 @@ grow = function(item, field, field_id) {
       }
     }
   }
-  if (_.isObject(field.arg)) {
+  if (_.isObject(field.arg) && (field.arg.string || field.arg.path) && !_.isArray(field.arg)) {
     field.arg = _.token_replace(field.arg, item);
   }
   if (!field.app) {
@@ -63,20 +64,8 @@ grow = function(item, field, field_id) {
   if (!field.func) {
     field.func = field_id;
   }
-  if ('map' === field.app && _.isFunction(this[field.func])) {
-    return item[field_id] = this[field.func](field.arg);
-  } else if (field.filter) {
-    if (this.filter(item, field.filter)) {
-      if (field["default"]) {
-        item = _.defaults(item, field["default"]);
-      }
-      if (field.field && key) {
-        item = this.field(item, field.field, key);
-      }
-      if (field.rename) {
-        return item = this.rename(item, field.rename);
-      }
-    }
+  if ('map' === field.app && _.isFunction(_[field.func])) {
+    return item[field_id] = _[field.func](field.arg);
   } else {
     delete field.app;
     delete field.map;

@@ -17,6 +17,10 @@ describe 'prairie', () ->
     new_item.should.have.property('dir2').and.equal('folder')
     new_item.should.have.property('dir3').and.equal('two')
 
+  it 'Has access to lodash functions such as _.first()', () ->
+    new_item.should.have.property('thing').and.equal("Fancy Name'")
+
   it 'Allows an array to be sent as a field description. Processes each one in succession.', () ->
     new_item = prairie(data.item, data.field_arr)
+    #console.log new_item
     new_item.should.have.property('name').and.equal('Fancy Namé')

@@ -16,14 +16,14 @@ seed = (item, field, field_id) ->
     item[field_id] = field
   # Process first as normal. Pass result to each further func.
   else if _.isArray field
-    grow item, field.shift(), field_id
+    field1 = field.shift()
+    grow item, field1, field_id
     unless _.isEmpty field
-      first_value = item[field_id]
       _.each field, (field_func) ->
         if field_func.string == true
-          field_func.string = first_value
+          field_func.string = item[field_id]
         else if field_func.arg == true
-          field_func.arg = first_value
+          field_func.arg = item[field_id]
         grow item, field_func, field_id
 
   # The function returns the value of the new field.
@@ -34,6 +34,7 @@ seed = (item, field, field_id) ->
 grow = (item, field, field_id) ->
   if field.arg_field and item[field.arg_field]
     field.arg = item[field.arg_field]
+    delete field.arg_field
   else if field.arg
     if _.isString(field.arg) and item[field.arg]
       field.arg = item[field.arg]
@@ -47,23 +48,27 @@ grow = (item, field, field_id) ->
           field.arg.string = tr
         else
           field.arg.string = null
-  if _.isObject field.arg
+  # A field arg can be an object of string templates.
+  # Why is this happening here?!?!?! >:-( Think about moving it.
+  if _.isObject(field.arg) and (field.arg.string or field.arg.path) and not _.isArray(field.arg)
     field.arg = _.token_replace field.arg, item
+  # @todo. Allow this module to require other modules based on 'app' field.
   unless field.app
     field.app = 'map'
   unless field.func
     field.func = field_id
-  if 'map' == field.app and _.isFunction @[field.func]
-    item[field_id] = @[field.func] field.arg
-  else if field.filter
-    if @filter(item, field.filter)
-      if field.default
-        item = _.defaults item, field.default
-      if field.field and key
-        item = @field item, field.field, key
-      if field.rename
-        item = @rename item, field.rename
-  else
+  if 'map' == field.app and _.isFunction _[field.func]
+    item[field_id] = _[field.func] field.arg
+  # Filtering?!? Here? What for?
+  # else if field.filter
+  #   if @filter(item, field.filter)
+  #     if field.default
+  #       item = _.defaults item, field.default
+  #     if field.field and key
+  #       item = @field item, field.field, key
+  #     if field.rename
+  #       item = @rename item, field.rename
+  else # Please describe what this does.
     delete field.app
     delete field.map
     delete field.func

@@ -23,6 +23,9 @@ describe('prairie', function() {
     new_item.should.have.property('dir2').and.equal('folder');
     return new_item.should.have.property('dir3').and.equal('two');
   });
+  it('Has access to lodash functions such as _.first()', function() {
+    return new_item.should.have.property('thing').and.equal("Fancy Name'");
+  });
   return it('Allows an array to be sent as a field description. Processes each one in succession.', function() {
     new_item = prairie(data.item, data.field_arr);
     return new_item.should.have.property('name').and.equal('Fancy Namé');
