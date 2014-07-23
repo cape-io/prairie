@@ -79,11 +79,11 @@ module.exports = (item, field_info, key = false) ->
   # We only care about adding fields to an object.
   unless _.isObject(item) and not _.isArray(item)
     return item
-
+  # We must have some stuff to do.
   unless _.isObject(field_info)
     return item
 
-  # Fresh copy of field_info so we can hack at it.
+  # Fresh copy of field_info so we can hack at it without worry.
   field_info = _.cloneDeep field_info
 
   # The primary key field.
