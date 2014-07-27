@@ -82,3 +82,8 @@ field_value:
           S: Sheer
 
 field_value_val: [Accessories, Draperies, Slip Covers]
+
+field_undefined:
+  joe:
+    func: upper
+    arg_field: not_an_actual_field

@@ -45,9 +45,13 @@ seed = function(item, field, field_id) {
 
 grow = function(item, field, field_id) {
   var field_overlay;
-  if (field.arg_field && item[field.arg_field]) {
-    field.arg = item[field.arg_field];
-    delete field.arg_field;
+  if (field.arg_field) {
+    if (item[field.arg_field]) {
+      field.arg = item[field.arg_field];
+      delete field.arg_field;
+    } else {
+      return;
+    }
   } else if (field.arg) {
     if (_.isString(field.arg) && item[field.arg]) {
       field.arg = item[field.arg];

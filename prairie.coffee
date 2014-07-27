@@ -39,9 +39,12 @@ seed = (item, field, field_id) ->
     grow item, field, field_id
 
 grow = (item, field, field_id) ->
-  if field.arg_field and item[field.arg_field]
-    field.arg = item[field.arg_field]
-    delete field.arg_field
+  if field.arg_field
+    if item[field.arg_field]
+      field.arg = item[field.arg_field]
+      delete field.arg_field
+    else
+      return
   else if field.arg
     if _.isString(field.arg) and item[field.arg]
       field.arg = item[field.arg]

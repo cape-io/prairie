@@ -1,5 +1,6 @@
 fs = require 'fs'
 yaml = require 'js-yaml'
+_ = require 'understory'
 
 should = require('chai').should()
 prairie = require('../prairie')
@@ -37,3 +38,8 @@ describe 'prairie', () ->
   it 'Field def array will replace arg.value === true with previous result.', () ->
     new_item = prairie(data.item, data.field_value)
     new_item.should.have.property('kai').and.eql(data.field_value_val)
+
+  it 'Does not set field if arg_field is set but not found in item obj.', () ->
+    before = _.clone(data.item)
+    new_item = prairie(before, data.field_undefined)
+    new_item.should.eql(data.item);
