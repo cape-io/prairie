@@ -27,3 +27,5 @@ describe 'prairie', () ->
     new_item = prairie(data.item, data.field_arr)
     #console.log new_item
     new_item.should.have.property('name').and.equal('Green, Blué')
+    new_item.should.have.property('char1int').and.equal(9)
+    new_item.should.have.property('char2int').and.equal(false)

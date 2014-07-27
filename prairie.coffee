@@ -106,7 +106,7 @@ module.exports = (item, field_info, key = false) ->
       item = _.merge item, _.dir_i(item.dirname)
       delete field_info.dir_i
 
-  _.each field_info, (field, field_id) =>
+  _.each field_info, (field, field_id) ->
     seed item, field, field_id
 
   return item

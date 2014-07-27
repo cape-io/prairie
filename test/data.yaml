@@ -7,6 +7,7 @@ item:
   bob: Blue'
   cat: Green
   dog: Tree
+  itemNumber: '9100019-03'
 
 field:
   dir_i: true
@@ -41,3 +42,15 @@ field_arr:
     -
       func: join
       join_with: ', '
+  char1int:
+    -
+      arg_field: itemNumber
+      func: first
+    - toNumber
+  char2int:
+    -
+      arg_field: path
+      func: second
+    - toNumber
+    - isNaN
+    - not
