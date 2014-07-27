@@ -10,7 +10,7 @@ seed = (item, field, field_id) ->
 
   # Simple string is a "template".
   if _.isString field
-    item[field_id] = _token_replace field, item
+    item[field_id] = _.token_replace field, item
   # Do not process numbers. It's the final value.
   else if _.isNumber field
     item[field_id] = field

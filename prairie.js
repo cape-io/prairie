@@ -11,7 +11,7 @@ seed = function(item, field, field_id) {
     };
   }
   if (_.isString(field)) {
-    return item[field_id] = _token_replace(field, item);
+    return item[field_id] = _.token_replace(field, item);
   } else if (_.isNumber(field)) {
     return item[field_id] = field;
   } else if (_.isArray(field)) {

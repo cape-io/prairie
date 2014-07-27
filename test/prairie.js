@@ -26,7 +26,14 @@ describe('prairie', function() {
     return new_item.should.have.property('thing').and.equal("Fancy Name'");
   });
   it('Handle string_replace correctly.', function() {
-    return prairie(data.item, data.field_t_rep).should.have.property('template').and.equal('Green Tree');
+    var res;
+    res = prairie(data.item, data.field_t_rep);
+    return res.should.have.property('template').and.equal('Green Tree');
+  });
+  it('Handle a field def that is a string.', function() {
+    var res;
+    res = prairie(data.item, data.field_t_rep);
+    return res.should.have.property('str_field').and.equal('Green Tree');
   });
   return it('Allows an array to be sent as a field description. Processes each one in succession.', function() {
     new_item = prairie(data.item, data.field_arr);

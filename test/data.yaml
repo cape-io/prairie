@@ -14,6 +14,7 @@ field:
   thing:
     func: first
     arg_field: descriptions
+  str_field: '{{cat}} {{dog}}'
 
 field_t_rep:
   template:

@@ -21,7 +21,11 @@ describe 'prairie', () ->
     new_item.should.have.property('thing').and.equal("Fancy Name'")
 
   it 'Handle string_replace correctly.', () ->
-    prairie(data.item, data.field_t_rep).should.have.property('template').and.equal('Green Tree')
+    res = prairie(data.item, data.field_t_rep)
+    res.should.have.property('template').and.equal('Green Tree')
+  it 'Handle a field def that is a string.', () ->
+    res = prairie(data.item, data.field_t_rep)
+    res.should.have.property('str_field').and.equal('Green Tree')
 
   it 'Allows an array to be sent as a field description. Processes each one in succession.', () ->
     new_item = prairie(data.item, data.field_arr)
