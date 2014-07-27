@@ -33,3 +33,7 @@ describe 'prairie', () ->
     new_item.should.have.property('name').and.equal('Green, Blué')
     new_item.should.have.property('char1int').and.equal(9)
     new_item.should.have.property('char2int').and.equal(false)
+
+  it 'Field def array will replace arg.value === true with previous result.', () ->
+    new_item = prairie(data.item, data.field_value)
+    new_item.should.have.property('kai').and.eql(data.field_value_val)

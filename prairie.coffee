@@ -28,6 +28,8 @@ seed = (item, field, field_id) ->
           field_func.arg = item[field_id]
         else if field_func.arg.string == true
           field_func.arg.string = item[field_id]
+        else if field_func.arg.value == true
+          field_func.arg.value = item[field_id]
         #console.log field_func
         grow item, field_func, field_id
 
@@ -46,6 +48,8 @@ grow = (item, field, field_id) ->
     # Replace value of string field with field from item.
     else if _.isString(field.arg.string) and item[field.arg.string]
       field.arg.string = item[field.arg.string]
+    else if _.isString(field.arg.value) and item[field.arg.value]
+      field.arg.value = item[field.arg.value]
 
   # @todo. Allow this module to require other modules based on 'app' field.
   unless field.app

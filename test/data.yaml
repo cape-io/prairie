@@ -8,6 +8,7 @@ item:
   cat: Green
   dog: Tree
   itemNumber: '9100019-03'
+  miscellaneous: 'A, d , SC'
 
 field:
   dir_i: true
@@ -55,3 +56,29 @@ field_arr:
     - toNumber
     - isNaN
     - not
+
+field_value:
+  kai:
+    -
+      func: upper
+      arg_field: miscellaneous
+    -
+      func: split
+      arg:
+        string: true
+        split_on: ','
+        toUpperCase: true
+        trim: true
+    -
+      func: array_replace
+      arg:
+        value: true
+        find_replace:
+          A: Accessories
+          D: Draperies
+          U: Upholstery
+          WC: Wall Covering
+          SC: Slip Covers
+          S: Sheer
+
+field_value_val: [Accessories, Draperies, Slip Covers]

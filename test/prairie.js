@@ -35,10 +35,14 @@ describe('prairie', function() {
     res = prairie(data.item, data.field_t_rep);
     return res.should.have.property('str_field').and.equal('Green Tree');
   });
-  return it('Allows an array to be sent as a field description. Processes each one in succession.', function() {
+  it('Allows an array to be sent as a field description. Processes each one in succession.', function() {
     new_item = prairie(data.item, data.field_arr);
     new_item.should.have.property('name').and.equal('Green, Blué');
     new_item.should.have.property('char1int').and.equal(9);
     return new_item.should.have.property('char2int').and.equal(false);
+  });
+  return it('Field def array will replace arg.value === true with previous result.', function() {
+    new_item = prairie(data.item, data.field_value);
+    return new_item.should.have.property('kai').and.eql(data.field_value_val);
   });
 });

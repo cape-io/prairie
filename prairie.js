@@ -32,6 +32,8 @@ seed = function(item, field, field_id) {
           field_func.arg = item[field_id];
         } else if (field_func.arg.string === true) {
           field_func.arg.string = item[field_id];
+        } else if (field_func.arg.value === true) {
+          field_func.arg.value = item[field_id];
         }
         return grow(item, field_func, field_id);
       });
@@ -51,6 +53,8 @@ grow = function(item, field, field_id) {
       field.arg = item[field.arg];
     } else if (_.isString(field.arg.string) && item[field.arg.string]) {
       field.arg.string = item[field.arg.string];
+    } else if (_.isString(field.arg.value) && item[field.arg.value]) {
+      field.arg.value = item[field.arg.value];
     }
   }
   if (!field.app) {
