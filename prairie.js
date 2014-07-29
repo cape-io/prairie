@@ -28,7 +28,7 @@
           } else if (_.isString(field_func.func) && _.isUndefined(field_func.arg) && _.isUndefined(field_func.arg_field)) {
             field_func.arg = item[field_id];
           }
-          if (!_.isUndefined(field_func.arg)) {
+          if (_.isObject(field_func.arg)) {
             if (field_func.arg.string === true) {
               field_func.arg.string = item[field_id];
             } else if (field_func.arg.value === true) {

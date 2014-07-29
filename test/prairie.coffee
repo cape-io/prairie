@@ -44,3 +44,5 @@ describe 'prairie', () ->
     before = _.clone(data.item)
     new_item = prairie(before, data.field_undefined)
     new_item.should.eql(data.item)
+
+# Test for null value as the arg.
