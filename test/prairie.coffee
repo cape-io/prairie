@@ -34,6 +34,7 @@ describe 'prairie', () ->
     new_item.should.have.property('name').and.equal('Green, Blué')
     new_item.should.have.property('char1int').and.equal(9)
     new_item.should.have.property('char2int').and.equal(false)
+    new_item.should.have.property('char_is_int').and.equal(true)
 
   it 'Field def array will replace arg.value === true with previous result.', () ->
     new_item = prairie(data.item, data.field_value)
@@ -42,4 +43,4 @@ describe 'prairie', () ->
   it 'Does not set field if arg_field is set but not found in item obj.', () ->
     before = _.clone(data.item)
     new_item = prairie(before, data.field_undefined)
-    new_item.should.eql(data.item);
+    new_item.should.eql(data.item)

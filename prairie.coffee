@@ -21,17 +21,18 @@ seed = (item, field, field_id) ->
     unless _.isEmpty field
       _.each field, (field_func) ->
         if _.isString field_func
-          field_func = {func: field_func, arg: true}
-        unless field_func.arg
-          field_func.arg = true
-        if field_func.arg == true
+          field_func =
+            func: field_func
+            arg: item[field_id]
+        else if _.isString(field_func.func) and _.isUndefined(field_func.arg) and _.isUndefined(field_func.arg_field)
           field_func.arg = item[field_id]
-        else if field_func.arg.string == true
-          field_func.arg.string = item[field_id]
-        else if field_func.arg.value == true
-          field_func.arg.value = item[field_id]
-        #console.log field_func
+        unless _.isUndefined field_func.arg
+          if field_func.arg.string == true
+            field_func.arg.string = item[field_id]
+          else if field_func.arg.value == true
+            field_func.arg.value = item[field_id]
         grow item, field_func, field_id
+        return
 
   # The function returns the value of the new field.
   else if _.isObject field
@@ -44,6 +45,7 @@ grow = (item, field, field_id) ->
       field.arg = item[field.arg_field]
       delete field.arg_field
     else
+      console.log 'Error finding field '+field_id
       return
   else if field.arg
     if _.isString(field.arg) and item[field.arg]
