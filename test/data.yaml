@@ -4,6 +4,7 @@ item:
   descriptions:
     - Fancy Name'
     - Normal blah
+  descript:  ["PIQUE'","EGGSHELL",""]
   bob: Blue'
   cat: Green
   dog: Tree
@@ -12,6 +13,8 @@ item:
 
 field:
   dir_i: true
+  ext: true
+  filename: true
   thing:
     func: first
     arg_field: descriptions
@@ -44,6 +47,16 @@ field_arr:
     -
       func: join
       join_with: ', '
+  name2:
+    -
+      arg_field: descript
+      func: first
+    -
+      func: string_replace
+      arg:
+        string: true
+        regex: "E'$"
+        replace: 'É'
   char1int:
     -
       arg_field: itemNumber

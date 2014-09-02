@@ -12,6 +12,8 @@ describe 'prairie', () ->
   it 'Adds dirname and dirsplit fields when the field object wants dir_i.', () ->
     new_item.should.have.property('dirname').and.equal('one/folder/two')
     new_item.should.have.property('dirsplit').and.eql(['one', 'folder', 'two'])
+    new_item.should.have.property('filename').and.eql('sam')
+    new_item.should.have.property('ext').and.eql('.txt')
 
   it 'Adds dir fields based on path field. Auto find key field.', () ->
     new_item.should.have.property('dir1').and.equal('one')
@@ -32,6 +34,7 @@ describe 'prairie', () ->
     new_item = prairie(data.item, data.field_arr)
     #console.log new_item
     new_item.should.have.property('name').and.equal('Green, Blué')
+    new_item.should.have.property('name2').and.equal('PIQUÉ')
     new_item.should.have.property('char1int').and.equal(9)
     new_item.should.have.property('char2int').and.equal(false)
     new_item.should.have.property('char_is_int').and.equal(true)

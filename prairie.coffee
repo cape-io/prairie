@@ -1,6 +1,6 @@
 _ = require 'understory'
 
-seed = (item, field, field_id) ->
+seed = (item, field, field_id, key) ->
   # Shortcut gets expanded here.
   if field == true and _.isFunction(_[field_id]) and key
     # This is the expanded version
@@ -45,7 +45,7 @@ grow = (item, field, field_id) ->
       field.arg = item[field.arg_field]
       delete field.arg_field
     else
-      console.log 'Error finding field '+field_id
+      #console.log 'Error finding field '+field_id
       return
   else if field.arg
     if _.isString(field.arg) and item[field.arg]
@@ -116,6 +116,6 @@ module.exports = (item, field_info, key = false) ->
       delete field_info.dir_i
 
   _.each field_info, (field, field_id) ->
-    seed item, field, field_id
+    seed item, field, field_id, key
 
   return item

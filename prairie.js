@@ -3,7 +3,7 @@
 
   _ = require('understory');
 
-  seed = function(item, field, field_id) {
+  seed = function(item, field, field_id, key) {
     var field1;
     if (field === true && _.isFunction(_[field_id]) && key) {
       field = {
@@ -50,7 +50,6 @@
         field.arg = item[field.arg_field];
         delete field.arg_field;
       } else {
-        console.log('Error finding field ' + field_id);
         return;
       }
     } else if (field.arg) {
@@ -124,7 +123,7 @@
       }
     }
     _.each(field_info, function(field, field_id) {
-      return seed(item, field, field_id);
+      return seed(item, field, field_id, key);
     });
     return item;
   };
