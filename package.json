@@ -1,6 +1,6 @@
 {
   "name": "prairie",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Add/Modify fields on an object based on a json configuration",
   "main": "prairie.js",
   "scripts": {
