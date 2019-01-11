@@ -1,9 +1,12 @@
 {
   "name": "prairie",
-  "version": "0.2.4",
-  "description": "Add/Modify fields on an object based on a json configuration",
-  "main": "prairie.js",
+  "version": "3.0.0",
+  "description": "Add/Modify fields on an object with composable functions.",
+  "main": "lib/index.js",
   "scripts": {
+    "compile": "babel src --out-dir lib",
+    "docs": "documentation build src/index.js -f md -o API.md",
+    "prepublish": "npm run compile",
     "test": "mocha"
   },
   "repository": {
@@ -22,11 +25,20 @@
   },
   "homepage": "https://github.com/cape-io/prairie",
   "dependencies": {
-    "understory": "0.x"
+    "lodash": "^4.17.11",
+    "understory": "^1.0.1"
   },
   "devDependencies": {
-    "mocha": "^1.20.1",
-    "chai": "^1.9.1",
-    "js-yaml": "^3.1.0"
+    "babel-cli": "^6.26.0",
+    "babel-plugin-add-module-exports": "^1.0.0",
+    "babel-plugin-lodash": "^3.3.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "documentation": "^9.1.1",
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-lodash-fp": "^2.2.0-a1",
+    "jest": "^23.6.0"
   }
 }
