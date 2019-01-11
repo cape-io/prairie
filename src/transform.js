@@ -1,5 +1,7 @@
-import { curry, flow, get, has, isFunction, propertyOf } from 'lodash/fp'
-import { condId } from './cond'
+import {
+  curry, flow, get, has, isFunction, propertyOf,
+} from 'lodash/fp'
+import overBranch from 'understory/lib/overBranch'
 
 /**
  * Return result of calling checker with object property.
@@ -30,6 +32,6 @@ export const hasMethodAt = doProp(isFunction)
 export const hasMethodOf = doPropOf(isFunction)
 
 // Replace entire item if has field. Transformer given value at path.
-export const transformHas = curry((path, transformer) => condId([
+export const transformHas = curry((path, transformer) => overBranch(
   has(path), doProp(transformer, path),
-]))
+))
