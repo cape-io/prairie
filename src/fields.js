@@ -4,15 +4,18 @@ import {
 import overBranch from 'understory/lib/overBranch'
 import { doProp } from './transform'
 
+// _.set(path, value, state)
+// _.update()
+
 /**
  * Create a new object with key and value.
  * @param {string} key The string used for key.
  * @param {any} val The thing used for value of key.
  * @returns {Object} New object with `value` placed on `key` property.
+ * @example createObj('foo', 'bar') // => { foo: 'bar' }
+ * @example createObj('baz', { a: 1 }) // => { baz: { a: 1 } }
  */
 export const createObj = curry((key, val) => ({ [key]: val }))
-
-// _.set(path, value, state)
 
 /**
  * Rearranged _.set args to path, state, value
@@ -58,7 +61,8 @@ export const setFieldHas = curry((path, transformer) => overBranch(
 ))
 
 /**
- * Replace field. Transformer gets field value.
+ * Replace field only if found. Transformer gets field value.
+ * Probably just use _.update()!?
  * @function replaceField
  */
 export const replaceField = curry((path, transformer) => overBranch(
