@@ -6,3 +6,6 @@ src/
 .gitignore
 *.test.js
 yarn-error.log
+yarn.lock
+test
+API.md
