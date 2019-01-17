@@ -1,6 +1,6 @@
 {
   "name": "prairie",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Add/Modify fields on an object with composable functions.",
   "main": "lib/index.js",
   "scripts": {
