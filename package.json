@@ -7,7 +7,7 @@
     "compile": "babel src --out-dir lib",
     "docs": "documentation build src/index.js -f md -o API.md",
     "prepublish": "npm run compile",
-    "test": "mocha"
+    "test": "jest --watch"
   },
   "repository": {
     "type": "git",

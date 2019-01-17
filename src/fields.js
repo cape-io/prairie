@@ -110,7 +110,7 @@ export const mergeFieldsWith = curry((withId, transformer, item) => ({
  * @param {string} setPath The destination path.
  * @param {Object} item The object to work with.
  */
-export const copy = curry((getPath, setPath, item) => set(item, setPath, get(item, getPath)))
+export const copy = curry((getPath, setPath, item) => set(setPath, get(getPath, item), item))
 
 /**
  * Move property from one names to another.
@@ -119,4 +119,4 @@ export const copy = curry((getPath, setPath, item) => set(item, setPath, get(ite
  * @param {Object} item The object to work with.
  * @returns {Object} Result after the move. Value at `getPath` removed and added to `setPath`.
  */
-export const move = curry((getPath, setPath, item) => unset(copy(getPath, setPath, item), getPath))
+export const move = curry((getPath, setPath, item) => unset(getPath, copy(getPath, setPath, item)))
