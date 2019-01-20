@@ -14,9 +14,12 @@
     "url": "git://github.com/cape-io/prairie.git"
   },
   "keywords": [
-    "cape",
+    "lodash",
+    "set",
+    "update",
     "fields",
-    "data"
+    "flow",
+    "functional"
   ],
   "author": "Kai Curry <kai@cape.io> (http://www.cape.io/)",
   "license": "ISC",
@@ -35,7 +38,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-3": "^6.24.1",
     "documentation": "^9.1.1",
-    "eslint": "^5.12.0",
+    "eslint": "^5.12.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-lodash-fp": "^2.2.0-a1",

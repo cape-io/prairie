@@ -13,36 +13,42 @@ import { doProp } from './transform'
  * @param {any} val The thing used for value of key.
  * @returns {Object} New object with `value` placed on `key` property.
  * @example createObj('foo', 'bar') // => { foo: 'bar' }
+ * @example createObj('foo')('bar') // => { foo: 'bar' }
  * @example createObj('baz', { a: 1 }) // => { baz: { a: 1 } }
  */
 export const createObj = curry((key, val) => ({ [key]: val }))
 
 /**
- * Rearranged _.set args to path, state, value
+ * Rearranged `_.set` args to `setIn(path, state, value)`
  * @type {function}
  * @example setIn(path, state, value)
  */
 export const setIn = curryN(3, rearg([0, 2, 1], set))
 
 /**
- * Rearranged `_.set` args to value, state, path
+ * Rearranged `_.set` args to `setVal(value, state, path)`
  * @type {function}
  * @example setVal(value, state, path)
  */
 export const setVal = curryN(3, rearg([2, 0, 1], set))
 
 /**
- * Normal lodash _.set with no rearg.
+ * Normal lodash _.set with no rearg. `setVal(state, path, value)`
  * @function
  * @example setVal(state, path, value)
  */
 export const setState = set.convert({ rearg: false })
 
 /**
- * Set field. Transformer given entire item.
- * @function
+ * Set field. Like `_.update` but transformer is given the entire item instead of only the field.
+ * @param {string} path The path of the property to replace.
+ * @param {Function} transformer Transformer given entire item. Return value set at path.
+ * @param {Object} item The item to update field on.
+ * @returns {Object} Item with `path` updated with result of `transformer`.
  */
-export const setField = curry((path, transformer, item) => set(path, transformer(item), item))
+export const setField = curry((path, transformer, item) => set(
+  path, transformer(item), item,
+))
 
 /**
  * Set field if it's not already there. Transformer given item.
@@ -80,12 +86,9 @@ export const replaceField = curry((path, transformer) => overBranch(
  * const toArray = updateToWhen(Array, _.isPlainObject, 'foo')
  * toArray({ foo: { a: 'happy' } }) // => { foo: [{ a: 'happy' }] }
  */
-export const updateToWhen = curry(
-  (transformer, boolCheck, path, item) => overBranch(
-    doProp(boolCheck, path),
-    update(path, transformer),
-  )(item),
-)
+export const updateToWhen = curry((transformer, boolCheck, path, item) => overBranch(
+  doProp(boolCheck, path), update(path, transformer),
+)(item))
 
 /**
  * Rearranged _.update args to transformer, path, item
