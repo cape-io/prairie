@@ -70,6 +70,35 @@ export const replaceField = curry((path, transformer) => overBranch(
 ))
 
 /**
+ * Replace field with result of transformer when boolCheck return true.
+ * @param {Function} transformer Transformer given value at path of item. Return replacement value.
+ * @param {Function} boolCheck A function that returns true when field should be replaced.
+ * @param {string} path The path of the property to update.
+ * @param {Object} item The item to conditionally update field on.
+ * @returns {Object} Item with conditional transformer applied to `path`.
+ * @example
+ * const toArray = updateToWhen(Array, _.isPlainObject, 'foo')
+ * toArray({ foo: { a: 'happy' } }) // => { foo: [{ a: 'happy' }] }
+ */
+export const updateToWhen = curry(
+  (transformer, boolCheck, path, item) => overBranch(
+    doProp(boolCheck, path),
+    update(path, transformer),
+  )(item),
+)
+
+/**
+ * Rearranged _.update args to transformer, path, item
+ * @param {Function} transformer Transformer given value at path of item. Return replacement value.
+ * @param {string} path The path of the property to get.
+ * @param {Object} item The item to update field on.
+ * @returns {Object} Item with transformer applied to property at `path`.
+ */
+export const updateTo = curry(
+  (transformer, path, item) => update(path, transformer, item),
+)
+
+/**
  * Set field on item. Transformer given value of withId property.
  * @param {string} path The path of the property to get.
  * @param {string} withId The path of the property to send to `transformer`.

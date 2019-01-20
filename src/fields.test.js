@@ -1,4 +1,7 @@
-const { copy, move } = require('./fields')
+import _ from 'lodash/fp'
+import {
+  copy, move, updateTo, updateToWhen,
+} from './fields'
 
 /* globals describe test expect */
 describe('copy', () => {
@@ -14,5 +17,25 @@ describe('move', () => {
   })
   test('moves prop from foo to bar', () => {
     expect(mover({ foo: 'happy' })).toEqual({ bar: 'happy' })
+  })
+})
+describe('updateTo', () => {
+  const toUpper = updateTo(_.toUpper)
+  const fooUpper = toUpper('foo')
+  test('will replace value of foo prop with uppercase', () => {
+    expect(fooUpper({ foo: 'happy' })).toEqual({ foo: 'HAPPY' })
+  })
+  const barUpper = toUpper('bar')
+  test('will replace value of bar prop with uppercase', () => {
+    expect(barUpper({ foo: 'sad', bar: 'happy' })).toEqual({ foo: 'sad', bar: 'HAPPY' })
+  })
+})
+describe('updateToWhen', () => {
+  const toArray = updateToWhen(Array, _.isPlainObject)
+  test('will replace value of foo prop with array when obj', () => {
+    expect(toArray('foo', { foo: { a: 'happy' } }))
+      .toEqual({ foo: [{ a: 'happy' }] })
+    const fooIsArrAlready = { foo: [{ a: 'happy' }] }
+    expect(toArray('foo', fooIsArrAlready)).toBe(fooIsArrAlready)
   })
 })
