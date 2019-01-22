@@ -59,11 +59,14 @@ export const addField = curry((path, transformer) => overBranch(
 ))
 
 /**
- * Replace field. Transformer given item.
- * @function
+ * Replace field only if it is already set. Transformer given entire item.
+ * @param {string} path The path of the property to replace.
+ * @param {Function} transformer Transformer given entire item. Return value set at path.
+ * @param {Object} item The item to update field on.
+ * @returns {Object} Item with `path` updated with result of `transformer`.
  */
-export const setFieldHas = curry((path, transformer) => overBranch(
-  has(path), setField(path, transformer),
+export const setFieldHas = curry((path, transformer, item) => overBranch(
+  has(path), setField(path, transformer, item),
 ))
 
 /**
