@@ -1,6 +1,6 @@
 import _ from 'lodash/fp'
 import {
-  copy, move, updateTo, updateToWhen,
+  copy, getFields, move, updateTo, updateToWhen,
 } from './fields'
 
 /* globals describe test expect */
@@ -17,6 +17,21 @@ describe('move', () => {
   })
   test('moves prop from foo to bar', () => {
     expect(mover({ foo: 'happy' })).toEqual({ bar: 'happy' })
+  })
+})
+describe('getFields', () => {
+  test('calling with structured selector passes item to func', () => {
+    expect(getFields({ bar: _.get('foo') }, { foo: 'happy' }))
+      .toEqual({ bar: 'happy' })
+  })
+  test('string values will be sent to _.get', () => {
+    expect(getFields({ bar: 'foo' })({ foo: 'happy' }))
+      .toEqual({ bar: 'happy' })
+  })
+  test('non string or function values will be return unchanged', () => {
+    const dateField = new Date()
+    expect(getFields({ bar: 'foo', baz: dateField })({ foo: 'happy' }).baz)
+      .toBe(dateField)
   })
 })
 describe('updateTo', () => {

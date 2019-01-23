@@ -1,5 +1,6 @@
 import {
-  curry, curryN, get, has, isEmpty, rearg, set, unset, update,
+  cond, constant, curry, curryN, get, has, identity, isEmpty, isFunction, isString,
+  mapValues, rearg, set, stubTrue, unset, update,
 } from 'lodash/fp'
 import overBranch from 'understory/lib/overBranch'
 import { doProp } from './transform'
@@ -145,7 +146,9 @@ export const mergeFieldsWith = curry((withId, transformer, item) => ({
  * @param {string} setPath The destination path.
  * @param {Object} item The object to work with.
  */
-export const copy = curry((getPath, setPath, item) => set(setPath, get(getPath, item), item))
+export const copy = curry(
+  (getPath, setPath, item) => set(setPath, get(getPath, item), item),
+)
 
 /**
  * Move property from one names to another.
@@ -154,4 +157,25 @@ export const copy = curry((getPath, setPath, item) => set(setPath, get(getPath, 
  * @param {Object} item The object to work with.
  * @returns {Object} Result after the move. Value at `getPath` removed and added to `setPath`.
  */
-export const move = curry((getPath, setPath, item) => unset(getPath, copy(getPath, setPath, item)))
+export const move = curry(
+  (getPath, setPath, item) => unset(getPath, copy(getPath, setPath, item)),
+)
+
+export const selector = cond([
+  [isString, get],
+  [isFunction, identity],
+  [stubTrue, constant],
+])
+/**
+ * Return an object with same keys as object argument.
+ *   Values replaced with result of value selector.
+ * @param {Object} structuredSelector Object where each value is a selector accepting item.
+ * @param {Object} item The object to work with.
+ * @return {Object2} Result after each value is passed the item.
+ * @example
+ * getFields({bar: _.get('foo')}, { foo: 'happy'}) // => { bar: 'happy' }
+ * getFields({bar: 'foo'})({ foo: 'happy'}) // => { bar: 'happy' }
+ */
+export const getFields = curry(
+  (structuredSelector, item) => mapValues(val => selector(val)(item), structuredSelector),
+)
