@@ -1,15 +1,22 @@
 import _ from 'lodash/fp'
 import {
-  copy, getFields, move, updateTo, updateToWhen,
+  copy, createObj, getFields, move, updateTo, updateToWhen,
 } from './fields'
 
 /* globals describe test expect */
+
 describe('copy', () => {
   const copier = copy('foo', 'bar')
   test('copies prop from foo to new prop bar', () => {
     expect(copier({ foo: 'happy' })).toEqual({ foo: 'happy', bar: 'happy' })
   })
 })
+describe('createObj', () => {
+  test('creates obj from (key, val) args', () => {
+    expect(createObj('foo', 'happy')).toEqual({ foo: 'happy' })
+  })
+})
+
 describe('move', () => {
   const mover = move('foo', 'bar')
   test('calling with only two props should return func', () => {
