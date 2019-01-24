@@ -12,7 +12,7 @@ Create a new object with key and value.
 
 ### Parameters
 
--   `key` **[string][42]** The string used for key.
+-   `key` **[string][46]** The string used for key.
 -   `val` **any** The thing used for value of key.
 
 ### Examples
@@ -29,13 +29,13 @@ createObj('foo')('bar') // => { foo: 'bar' }
 createObj('baz', { a: 1 }) // => { baz: { a: 1 } }
 ```
 
-Returns **[Object][43]** New object with `value` placed on `key` property.
+Returns **[Object][47]** New object with `value` placed on `key` property.
 
 ## setIn
 
 Rearranged `_.set` args to `setIn(path, state, value)`
 
-Type: [function][44]
+Type: [function][48]
 
 ### Examples
 
@@ -47,7 +47,7 @@ setIn(path, state, value)
 
 Rearranged `_.set` args to `setVal(value, state, path)`
 
-Type: [function][44]
+Type: [function][48]
 
 ### Examples
 
@@ -71,15 +71,21 @@ Set field. Like `_.update` but transformer is given the entire item instead of o
 
 ### Parameters
 
--   `path` **[string][42]** The path of the property to replace.
--   `transformer` **[Function][44]** Transformer given entire item. Return value set at path.
--   `item` **[Object][43]** The item to update field on.
+-   `path` **[string][46]** The path of the property to replace.
+-   `transformer` **[Function][48]** Transformer given entire item. Return value set at path.
+-   `item` **[Object][47]** The item to update field on.
 
-Returns **[Object][43]** Item with `path` updated with result of `transformer`.
+Returns **[Object][47]** Item with `path` updated with result of `transformer`.
 
 ## addField
 
-Set field if it's not already there. Transformer given item.
+Set field like `setField` but only if it's value is empty.
+
+### Parameters
+
+-   `path` **[string][46]** The path of the property to replace.
+-   `transformer` **[Function][48]** Transformer given entire item. Return value set at path.
+-   `item` **[Object][47]** The item to update field on.
 
 ## setFieldHas
 
@@ -87,11 +93,11 @@ Replace field only if it is already set. Transformer given entire item.
 
 ### Parameters
 
--   `path` **[string][42]** The path of the property to replace.
--   `transformer` **[Function][44]** Transformer given entire item. Return value set at path.
--   `item` **[Object][43]** The item to update field on.
+-   `path` **[string][46]** The path of the property to replace.
+-   `transformer` **[Function][48]** Transformer given entire item. Return value set at path.
+-   `item` **[Object][47]** The item to update field on.
 
-Returns **[Object][43]** Item with `path` updated with result of `transformer`.
+Returns **[Object][47]** Item with `path` updated with result of `transformer`.
 
 ## replaceField
 
@@ -104,10 +110,10 @@ Replace field with result of transformer when boolCheck return true.
 
 ### Parameters
 
--   `transformer` **[Function][44]** Transformer given value at path of item. Return replacement value.
--   `boolCheck` **[Function][44]** A function that returns true when field should be replaced.
--   `path` **[string][42]** The path of the property to update.
--   `item` **[Object][43]** The item to conditionally update field on.
+-   `transformer` **[Function][48]** Transformer given value at path of item. Return replacement value.
+-   `boolCheck` **[Function][48]** A function that returns true when field should be replaced.
+-   `path` **[string][46]** The path of the property to update.
+-   `item` **[Object][47]** The item to conditionally update field on.
 
 ### Examples
 
@@ -116,7 +122,7 @@ const toArray = updateToWhen(Array, _.isPlainObject, 'foo')
 toArray({ foo: { a: 'happy' } }) // => { foo: [{ a: 'happy' }] }
 ```
 
-Returns **[Object][43]** Item with conditional transformer applied to `path`.
+Returns **[Object][47]** Item with conditional transformer applied to `path`.
 
 ## updateTo
 
@@ -124,21 +130,21 @@ Rearranged \_.update args to transformer, path, item
 
 ### Parameters
 
--   `transformer` **[Function][44]** Transformer given value at path of item. Return replacement value.
--   `path` **[string][42]** The path of the property to get.
--   `item` **[Object][43]** The item to update field on.
+-   `transformer` **[Function][48]** Transformer given value at path of item. Return replacement value.
+-   `path` **[string][46]** The path of the property to get.
+-   `item` **[Object][47]** The item to update field on.
 
-Returns **[Object][43]** Item with transformer applied to property at `path`.
+Returns **[Object][47]** Item with transformer applied to property at `path`.
 
-## setFieldWith
+## updateWith
 
 Set field on item. Transformer given value of withId property.
 
 ### Parameters
 
--   `path` **[string][42]** The path of the property to get.
--   `withId` **[string][42]** The path of the property to send to `transformer`.
--   `transformer` **[Function][44]** Transformer given value of withId property.
+-   `path` **[string][46]** The path of the property to get.
+-   `withId` **[string][46]** The path of the property to send to `transformer`.
+-   `transformer` **[Function][48]** Transformer given value of withId property.
 
 Returns **ItemTransformer** Result of transformer set at `field` `item`.
 
@@ -148,8 +154,8 @@ Replace item with result of transformer.
 
 ### Parameters
 
--   `transformer` **[Function][44]** Accepts single param that is `item`. Should return a new Object.
--   `item` **[Object][43]**
+-   `transformer` **[Function][48]** Accepts single param that is `item`. Should return a new Object.
+-   `item` **[Object][47]**
 
 ### Examples
 
@@ -158,7 +164,7 @@ mergeFields(({ a, b }) => ({ a4: a * 4, b3: b * 3 }), { a: 2, b: 3 });
 // => { a: 2, b: 3, a4: 8, b3: 9 }
 ```
 
-Returns **[Object][43]** Merged result of transformer on top of `item`.
+Returns **[Object][47]** Merged result of transformer on top of `item`.
 
 ## mergeFieldsWith
 
@@ -166,11 +172,11 @@ Replace item. Transformer given value of withId property.
 
 ### Parameters
 
--   `withId` **[string][42]** The path of the property to send to `transformer`.
--   `transformer` **[Function][44]** Sent item property at path of `withId`. Should return new Object.
--   `item` **[Object][43]** The object to work with.
+-   `withId` **[string][46]** The path of the property to send to `transformer`.
+-   `transformer` **[Function][48]** Sent item property at path of `withId`. Should return new Object.
+-   `item` **[Object][47]** The object to work with.
 
-Returns **[Object][43]** Result of transformer set at `field` `item`.
+Returns **[Object][47]** Result of transformer set at `field` `item`.
 
 ## copy
 
@@ -178,9 +184,9 @@ Copy value of getPath to setPath.
 
 ### Parameters
 
--   `getPath` **[string][42]** The source path.
--   `setPath` **[string][42]** The destination path.
--   `item` **[Object][43]** The object to work with.
+-   `getPath` **[string][46]** The source path.
+-   `setPath` **[string][46]** The destination path.
+-   `item` **[Object][47]** The object to work with.
 
 ## move
 
@@ -188,11 +194,11 @@ Move property from one names to another.
 
 ### Parameters
 
--   `getPath` **[string][42]** The source path.
--   `setPath` **[string][42]** The destination path.
--   `item` **[Object][43]** The object to work with.
+-   `getPath` **[string][46]** The source path.
+-   `setPath` **[string][46]** The destination path.
+-   `item` **[Object][47]** The object to work with.
 
-Returns **[Object][43]** Result after the move. Value at `getPath` removed and added to `setPath`.
+Returns **[Object][47]** Result after the move. Value at `getPath` removed and added to `setPath`.
 
 ## getFields
 
@@ -201,8 +207,8 @@ Return an object with same keys as object argument.
 
 ### Parameters
 
--   `structuredSelector` **[Object][43]** Object where each value is a selector accepting item.
--   `item` **[Object][43]** The object to work with.
+-   `structuredSelector` **[Object][47]** Object where each value is a selector accepting item.
+-   `item` **[Object][47]** The object to work with.
 
 ### Examples
 
@@ -215,9 +221,13 @@ Returns **Object2** Result after each value is passed the item.
 
 ## doProp
 
-Return result of calling checker with object property.
+Return result of calling transformer with property value at path.
 
-Type: [Function][44]
+### Parameters
+
+-   `transformer` **[Function][48]** Transformer given value at path of item.
+-   `path` **[string][46]** The path of the property to get.
+-   `item` **[Object][47]** The item to get property value on.
 
 ### Examples
 
@@ -233,13 +243,13 @@ doProp(_.isString, 'foo')({ foo: 2 }) // => false
 
 Create a function that will accept a path string and send its value of object to transformer.
 
-Type: [Function][44]
+Type: [Function][48]
 
 ## hasMethodAt
 
-Check if property has a method at path.
+Check if property has a method at path. An example of using `doProp()`.
 
-Type: [Function][44]
+Type: [Function][48]
 
 ### Examples
 
@@ -249,9 +259,21 @@ hasMethodAt(path)(object)
 
 ## hasMethodOf
 
-Check if property at path is a function.
+Check if property at path is a function. An example of using `doPropOf()`.
 
-Type: [Function][44]
+Type: [Function][48]
+
+### Examples
+
+```javascript
+hasMethodAt(path)(object)
+```
+
+## transformHas
+
+Replace entire item if has field. Transformer given value at path.
+
+Type: [Function][48]
 
 ### Examples
 
@@ -283,66 +305,74 @@ hasMethodAt(path)(object)
 
 [12]: #addfield
 
-[13]: #setfieldhas
+[13]: #parameters-2
 
-[14]: #parameters-2
+[14]: #setfieldhas
 
-[15]: #replacefield
+[15]: #parameters-3
 
-[16]: #updatetowhen
+[16]: #replacefield
 
-[17]: #parameters-3
+[17]: #updatetowhen
 
-[18]: #examples-4
+[18]: #parameters-4
 
-[19]: #updateto
+[19]: #examples-4
 
-[20]: #parameters-4
+[20]: #updateto
 
-[21]: #setfieldwith
+[21]: #parameters-5
 
-[22]: #parameters-5
+[22]: #updatewith
 
-[23]: #mergefields
+[23]: #parameters-6
 
-[24]: #parameters-6
+[24]: #mergefields
 
-[25]: #examples-5
+[25]: #parameters-7
 
-[26]: #mergefieldswith
+[26]: #examples-5
 
-[27]: #parameters-7
+[27]: #mergefieldswith
 
-[28]: #copy
+[28]: #parameters-8
 
-[29]: #parameters-8
+[29]: #copy
 
-[30]: #move
+[30]: #parameters-9
 
-[31]: #parameters-9
+[31]: #move
 
-[32]: #getfields
+[32]: #parameters-10
 
-[33]: #parameters-10
+[33]: #getfields
 
-[34]: #examples-6
+[34]: #parameters-11
 
-[35]: #doprop
+[35]: #examples-6
 
-[36]: #examples-7
+[36]: #doprop
 
-[37]: #dopropof
+[37]: #parameters-12
 
-[38]: #hasmethodat
+[38]: #examples-7
 
-[39]: #examples-8
+[39]: #dopropof
 
-[40]: #hasmethodof
+[40]: #hasmethodat
 
-[41]: #examples-9
+[41]: #examples-8
 
-[42]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[42]: #hasmethodof
 
-[43]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[43]: #examples-9
 
-[44]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[44]: #transformhas
+
+[45]: #examples-10
+
+[46]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[47]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[48]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

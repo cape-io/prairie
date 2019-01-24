@@ -118,7 +118,7 @@ export const updateWith = curry((path, withId, transformer) => setField(
   path, doProp(transformer, withId),
 ))
 export const setFieldWith = updateWith
-// export const setWith = updateWith
+export const setWith = updateWith
 
 /**
  * Replace item with result of transformer.
