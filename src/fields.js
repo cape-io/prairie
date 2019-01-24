@@ -52,8 +52,10 @@ export const setField = curry((path, transformer, item) => set(
 ))
 
 /**
- * Set field if it's not already there. Transformer given item.
- * @function
+ * Set field like `setField` but only if it's value is empty.
+ * @param {string} path The path of the property to replace.
+ * @param {Function} transformer Transformer given entire item. Return value set at path.
+ * @param {Object} item The item to update field on.
  */
 export const addField = curry((path, transformer) => overBranch(
   doProp(isEmpty, path), setField(path, transformer),
@@ -66,8 +68,8 @@ export const addField = curry((path, transformer) => overBranch(
  * @param {Object} item The item to update field on.
  * @returns {Object} Item with `path` updated with result of `transformer`.
  */
-export const setFieldHas = curry((path, transformer, item) => overBranch(
-  has(path), setField(path, transformer, item),
+export const setFieldHas = curry((path, transformer) => overBranch(
+  has(path), setField(path, transformer),
 ))
 
 /**
@@ -112,9 +114,11 @@ export const updateTo = curry(
  * @param {Function} transformer Transformer given value of withId property.
  * @returns {ItemTransformer} Result of transformer set at `field` `item`.
  */
-export const setFieldWith = curry((path, withId, transformer) => setField(
+export const updateWith = curry((path, withId, transformer) => setField(
   path, doProp(transformer, withId),
 ))
+export const setFieldWith = updateWith
+// export const setWith = updateWith
 
 /**
  * Replace item with result of transformer.
