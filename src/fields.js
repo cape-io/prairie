@@ -114,8 +114,8 @@ export const updateTo = curry(
  * @param {Function} transformer Transformer given value of withId property.
  * @returns {ItemTransformer} Result of transformer set at `field` `item`.
  */
-export const updateWith = curry((path, withId, transformer) => setField(
-  path, doProp(transformer, withId),
+export const updateWith = curry((path, withId, transformer, item) => setField(
+  path, doProp(transformer, withId), item,
 ))
 export const setFieldWith = updateWith
 export const setWith = updateWith
@@ -130,7 +130,23 @@ export const setWith = updateWith
  * @param {Object} item
  * @returns {Object} Merged result of transformer on top of `item`.
  */
-export const mergeFields = curry((transformer, item) => ({ ...item, ...transformer(item) }))
+export const mergeFields = curry((transformer, item) => ({
+  ...item, ...transformer(item),
+}))
+
+/**
+ * Merge source on top of item.
+ * @example
+ * mergeWith({ a: 1 })({ a: 2, b: 4 });
+ * // => { a: 1, b: 4 }
+ *
+ * @param {Object} source Object to apply on top of item.
+ * @param {Object} item Object that values of source will be applied.
+ * @returns {Object} Merged result of `surce` on top of `item`.
+ */
+export const mergeWith = curry((source, item) => Object.assign(
+  {}, item, source,
+))
 
 /**
  * Replace item. Transformer given value of withId property.
@@ -141,7 +157,7 @@ export const mergeFields = curry((transformer, item) => ({ ...item, ...transform
  */
 export const mergeFieldsWith = curry((withId, transformer, item) => ({
   ...item,
-  ...doProp(transformer, withId)(item),
+  ...doProp(transformer, withId, item),
 }))
 
 /**
