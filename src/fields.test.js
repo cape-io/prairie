@@ -1,6 +1,6 @@
 import _ from 'lodash/fp'
 import {
-  copy, createObj, getFields, move, updateTo, updateToWhen,
+  copy, createObj, findAt, getFields, mergeWith, move, updateTo, updateToWhen,
 } from './fields'
 
 /* globals describe test expect */
@@ -26,6 +26,13 @@ describe('move', () => {
     expect(mover({ foo: 'happy' })).toEqual({ bar: 'happy' })
   })
 })
+describe('findAt', () => {
+  test('finds first truthy path', () => {
+    const getFirst = findAt(['c', 'b', 'a'])
+    expect(getFirst({ a: 'foo', b: 'bar', c: null })).toBe('bar')
+    expect(getFirst({ a: 'foo', b: false, c: '' })).toBe('foo')
+  })
+})
 describe('getFields', () => {
   test('calling with structured selector passes item to func', () => {
     expect(getFields({ bar: _.get('foo') }, { foo: 'happy' }))
@@ -39,6 +46,12 @@ describe('getFields', () => {
     const dateField = new Date()
     expect(getFields({ bar: 'foo', baz: dateField })({ foo: 'happy' }).baz)
       .toBe(dateField)
+  })
+})
+describe('mergeWith', () => {
+  test('apply 1st arg ontop of 2nd arg', () => {
+    expect(mergeWith({ a: 'foo', b: 'bar' })({ b: 'baz', c: '' }))
+      .toEqual({ a: 'foo', b: 'bar', c: '' })
   })
 })
 describe('updateTo', () => {

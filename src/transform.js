@@ -1,7 +1,6 @@
 import {
   curry, get, has, isFunction, propertyOf,
 } from 'lodash/fp'
-import overBranch from 'understory/lib/overBranch'
 
 /**
  * Return result of calling transformer with property value at path.
@@ -42,6 +41,6 @@ export const hasMethodOf = doPropOf(isFunction)
  * @type {Function}
  * @example hasMethodAt(path)(object)
  */
-export const transformHas = curry((path, transformer, item) => overBranch(
-  has(path, item), doProp(transformer, path, item),
+export const transformHas = curry((path, transformer, item) => (
+  has(path, item) ? doProp(transformer, path, item) : null
 ))

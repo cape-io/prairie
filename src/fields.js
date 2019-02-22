@@ -1,5 +1,5 @@
 import {
-  cond, constant, curry, curryN, get, has, identity, isEmpty, isFunction, isString,
+  at, cond, constant, curry, curryN, find, get, has, identity, isEmpty, isFunction, isString,
   mapValues, rearg, set, stubTrue, unset, update,
 } from 'lodash/fp'
 import overBranch from 'understory/lib/overBranch'
@@ -20,23 +20,28 @@ import { doProp } from './transform'
 export const createObj = curry((key, val) => ({ [key]: val }))
 
 /**
- * Rearranged `_.set` args to `setIn(path, state, value)`
+ * Rearranged `_.set` args to `setIn(path, object, value)`
  * @type {function}
- * @example setIn(path, state, value)
+ * @param {string} path The path of the property to replace.
+ * @param {Function} object The object that to set value on.
+ * @param {any} value The value to place on path.
+ * @returns {Object} New object with `value` set at `path`.
+ * @example setIn('foo', {}, 'bar') // => { foo: 'bar' }
+ * @example setIn('a', { b: 1 }, 2) // => { a: 2, b: 1 }
  */
 export const setIn = curryN(3, rearg([0, 2, 1], set))
 
 /**
- * Rearranged `_.set` args to `setVal(value, state, path)`
+ * Rearranged `_.set` args to `setVal(value, object, path)`
  * @type {function}
- * @example setVal(value, state, path)
+ * @example setVal(value, object, path)
  */
 export const setVal = curryN(3, rearg([2, 0, 1], set))
 
 /**
- * Normal lodash _.set with no rearg. `setVal(state, path, value)`
+ * Normal lodash _.set with no rearg. `setVal(object, path, value)`
  * @function
- * @example setVal(state, path, value)
+ * @example setVal(object, path, value)
  */
 export const setState = set.convert({ rearg: false })
 
@@ -186,6 +191,17 @@ export const selector = cond([
   [isFunction, identity],
   [stubTrue, constant],
 ])
+
+/**
+ * Return the first truthy value of paths.
+ * @param {Array} getPaths An array of source paths.
+ * @param {Object} item The item to look for values on.
+ * @returns {any} The first truthy value found at one of the `getPaths`.
+ * @example findAt(['c', 'b', 'a'])({ a: 'foo', b: 'bar', c: null }) // => 'bar'
+ * @example findAt(['c', 'b', 'a'])({ a: 'foo', b: false, c: '' }) // => 'foo'
+ */
+export const findAt = curry((getPaths, item) => find(identity, at(getPaths, item)))
+
 /**
  * Return an object with same keys as object argument.
  *   Values replaced with result of value selector.

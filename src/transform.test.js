@@ -1,6 +1,6 @@
 import _ from 'lodash/fp'
 import {
-  doProp, doPropOf, hasMethodAt, hasMethodOf,
+  doProp, doPropOf, hasMethodAt, hasMethodOf, transformHas,
 } from './transform'
 
 const fonop = { foo: _.noop }
@@ -38,5 +38,12 @@ describe('hasMethodOf', () => {
   test('checks to see if item path is a function', () => {
     expect(hasMethodOf(fonop)('foo')).toBe(true)
     expect(hasMethodAt(fonop, 'bar')).toBe(false)
+  })
+})
+describe('transformHas', () => {
+  test('Like doProp but only if path found', () => {
+    const func = transformHas('foo', _.toUpper)
+    expect(func({ foo: 'bar' })).toBe('BAR')
+    expect(func({ baz: 'bar' })).toBe(null)
   })
 })
