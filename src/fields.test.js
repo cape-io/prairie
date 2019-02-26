@@ -15,6 +15,9 @@ describe('createObj', () => {
   test('creates obj from (key, val) args', () => {
     expect(createObj('foo', 'happy')).toEqual({ foo: 'happy' })
   })
+  test('nested', () => {
+    expect(createObj('foo.bar', 'happy')).toEqual({ foo: { bar: 'happy' } })
+  })
 })
 
 describe('move', () => {

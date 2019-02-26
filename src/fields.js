@@ -9,15 +9,17 @@ import { doProp } from './transform'
 // _.update()
 
 /**
- * Create a new object with key and value.
- * @param {string} key The string used for key.
- * @param {any} val The thing used for value of key.
- * @returns {Object} New object with `value` placed on `key` property.
+ * Create a new object based path and value.
+ * Dot notation or an array of strings will result in nested objects.
+ * @param {string|Array} path The path used for key creation.
+ * @param {any} value The thing used for value of key.
+ * @returns {Object} New object with `value` placed on the last key of `path`.
+ * @example createObj('foo.bar', 'happy') // => { foo: { bar: 'happy' } }
  * @example createObj('foo', 'bar') // => { foo: 'bar' }
  * @example createObj('foo')('bar') // => { foo: 'bar' }
  * @example createObj('baz', { a: 1 }) // => { baz: { a: 1 } }
  */
-export const createObj = curry((key, val) => ({ [key]: val }))
+export const createObj = curry((path, value) => set(path, value, {}))
 
 /**
  * Rearranged `_.set` args to `setIn(path, object, value)`
