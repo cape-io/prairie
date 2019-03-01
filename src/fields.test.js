@@ -1,6 +1,6 @@
 import _ from 'lodash/fp'
 import {
-  copy, createObj, findAt, getFields, mergeWith, move, updateTo, updateToWhen,
+  copy, createObj, findAt, getFields, mergeWith, move, renameFields, updateTo, updateToWhen,
 } from './fields'
 
 /* globals describe test expect */
@@ -55,6 +55,14 @@ describe('mergeWith', () => {
   test('apply 1st arg ontop of 2nd arg', () => {
     expect(mergeWith({ a: 'foo', b: 'bar' })({ b: 'baz', c: '' }))
       .toEqual({ a: 'foo', b: 'bar', c: '' })
+  })
+})
+describe('renameFields', () => {
+  const rename = renameFields({ foo: 'bar', bin_baz: _.camelCase })
+  test('rename with string or function', () => {
+    expect(rename({
+      foo: 1, bin_baz: 2, bar: 3, other: 4,
+    })).toEqual({ bar: 1, binBaz: 2, other: 4 })
   })
 })
 describe('updateTo', () => {

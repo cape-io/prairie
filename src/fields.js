@@ -1,9 +1,11 @@
 import {
   at, cond, constant, curry, curryN, find, get, has, identity, isEmpty, isFunction, isString,
-  mapValues, rearg, set, stubTrue, unset, update,
+  mapValues, rearg, reduce, set, stubTrue, unset, update,
 } from 'lodash/fp'
 import overBranch from 'understory/lib/overBranch'
 import { doProp } from './transform'
+
+const transform = reduce.convert({ cap: false })
 
 // _.set(path, value, state)
 // _.update()
@@ -183,11 +185,33 @@ export const copy = curry(
  * @param {string} setPath The destination path.
  * @param {Object} item The object to work with.
  * @returns {Object} Result after the move. Value at `getPath` removed and added to `setPath`.
+ * @example move('foo', 'bar', { foo: 1, baz: 2 }) // => { bar: 1, baz: 2 }
  */
 export const move = curry(
   (getPath, setPath, item) => unset(getPath, copy(getPath, setPath, item)),
 )
 
+const rename = (newPath, oldPath) => (isFunction(newPath) ? newPath(oldPath) : newPath)
+/**
+ * Move property from one names to another.
+ * @param {Object} renameObj Object where each key will be moved to the value path.
+ *   If value is a function it is sent the old key and will return the new one.
+ * @param {Object} item The object to work with.
+ * @returns {Object} Result after the renames.
+ * @example
+ *   const rename = renameFields({ foo: 'bar', bin_baz: _.camelCase })
+ *   rename({ foo: 1, bin_baz: 2, bar: 3, other: 4 })
+ *   // => { bar: 1, binBaz: 2, other: 4 }
+ */
+export const renameFields = curry(
+  (renameObj, item) => (
+    transform(
+      (result, newPath, oldPath) => move(oldPath, rename(newPath, oldPath), result),
+      item,
+      renameObj,
+    )
+  ),
+)
 export const selector = cond([
   [isString, get],
   [isFunction, identity],
