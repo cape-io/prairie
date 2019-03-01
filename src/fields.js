@@ -1,5 +1,6 @@
 import {
-  at, cond, constant, curry, curryN, find, get, has, identity, isEmpty, isFunction, isString,
+  at, cond, constant, curry, curryN, find, get, has, identity,
+  isEmpty, isFunction, isString, isUndefined,
   mapValues, rearg, reduce, set, stubTrue, unset, update,
 } from 'lodash/fp'
 import overBranch from 'understory/lib/overBranch'
@@ -170,28 +171,47 @@ export const mergeFieldsWith = curry((withId, transformer, item) => ({
 }))
 
 /**
- * Copy value of getPath to setPath.
+ * Copy value of getPath to setPath only if getPath finds something.
+ *   Otherwise item left untouched.
  * @param {string} getPath The source path.
  * @param {string} setPath The destination path.
  * @param {Object} item The object to work with.
  */
 export const copy = curry(
-  (getPath, setPath, item) => set(setPath, get(getPath, item), item),
+  (getPath, setPath, item) => {
+    const val = get(getPath, item)
+    return isUndefined(val) ? item : set(setPath, val, item)
+  },
 )
 
+const rename = (newPath, oldPath) => (isFunction(newPath) ? newPath(oldPath) : newPath)
 /**
  * Move property from one names to another.
  * @param {string} getPath The source path.
- * @param {string} setPath The destination path.
+ * @param {string|Function} setPath The destination path.
  * @param {Object} item The object to work with.
  * @returns {Object} Result after the move. Value at `getPath` removed and added to `setPath`.
  * @example move('foo', 'bar', { foo: 1, baz: 2 }) // => { bar: 1, baz: 2 }
  */
-export const move = curry(
-  (getPath, setPath, item) => unset(getPath, copy(getPath, setPath, item)),
-)
+export const move = curry((getPath, setPath, item) => unset(
+  getPath,
+  copy(getPath, rename(setPath, getPath), item),
+))
 
-const rename = (newPath, oldPath) => (isFunction(newPath) ? newPath(oldPath) : newPath)
+/**
+ * Map some keys.
+ * @param {Function} renamer The function to send each key. Should return new key string.
+ * @param {Array} renameKeys An array of source paths.
+ * @param {Object} item The object to work with.
+ * @returns {Object} Result after the move. Value at `getPath` removed and added to `setPath`.
+ * @example move('foo', 'bar', { foo: 1, baz: 2 }) // => { bar: 1, baz: 2 }
+ */
+export const moveAll = curry((renamer, renameKeys, item) => renameKeys.reduce(
+  (result, oldPath) => move(oldPath, renamer, result),
+  item,
+))
+export const mapSomeKeys = moveAll
+
 /**
  * Move property from one names to another.
  * @param {Object} renameObj Object where each key will be moved to the value path.
@@ -206,12 +226,13 @@ const rename = (newPath, oldPath) => (isFunction(newPath) ? newPath(oldPath) : n
 export const renameFields = curry(
   (renameObj, item) => (
     transform(
-      (result, newPath, oldPath) => move(oldPath, rename(newPath, oldPath), result),
+      (result, newPath, oldPath) => move(oldPath, newPath, result),
       item,
       renameObj,
     )
   ),
 )
+export const moveFields = renameFields
 export const selector = cond([
   [isString, get],
   [isFunction, identity],

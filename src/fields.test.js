@@ -1,6 +1,7 @@
 import _ from 'lodash/fp'
 import {
-  copy, createObj, findAt, getFields, mergeWith, move, renameFields, updateTo, updateToWhen,
+  copy, createObj, findAt, getFields, mergeWith, move, moveAll,
+  renameFields, updateTo, updateToWhen,
 } from './fields'
 
 /* globals describe test expect */
@@ -26,9 +27,28 @@ describe('move', () => {
     expect(typeof mover).toBe('function')
   })
   test('moves prop from foo to bar', () => {
-    expect(mover({ foo: 'happy' })).toEqual({ bar: 'happy' })
+    expect(mover({ foo: 'happy', baz: 'b' })).toEqual({ bar: 'happy', baz: 'b' })
   })
 })
+describe('moveAll', () => {
+  const rename = moveAll(_.camelCase, ['foo_1', 'bar_2', 'baz_3'])
+  test('rename select keys with a function', () => {
+    expect(rename({
+      foo_1: 1, bin_baz: 2, bar_2: 3, other: 4,
+    })).toEqual({
+      foo1: 1, bin_baz: 2, bar2: 3, other: 4,
+    })
+  })
+})
+describe('moveFields', () => {
+  const rename = renameFields({ foo: 'bar', bin_baz: _.camelCase })
+  test('rename with string or function', () => {
+    expect(rename({
+      foo: 1, bin_baz: 2, bar: 3, other: 4,
+    })).toEqual({ bar: 1, binBaz: 2, other: 4 })
+  })
+})
+
 describe('findAt', () => {
   test('finds first truthy path', () => {
     const getFirst = findAt(['c', 'b', 'a'])
@@ -57,14 +77,7 @@ describe('mergeWith', () => {
       .toEqual({ a: 'foo', b: 'bar', c: '' })
   })
 })
-describe('renameFields', () => {
-  const rename = renameFields({ foo: 'bar', bin_baz: _.camelCase })
-  test('rename with string or function', () => {
-    expect(rename({
-      foo: 1, bin_baz: 2, bar: 3, other: 4,
-    })).toEqual({ bar: 1, binBaz: 2, other: 4 })
-  })
-})
+
 describe('updateTo', () => {
   const toUpper = updateTo(_.toUpper)
   const fooUpper = toUpper('foo')
