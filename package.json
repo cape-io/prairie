@@ -19,7 +19,9 @@
     "update",
     "fields",
     "flow",
-    "functional"
+    "functional",
+    "collection",
+    "object"
   ],
   "author": "Kai Curry <kai@cape.io> (http://www.cape.io/)",
   "license": "ISC",
