@@ -108,7 +108,7 @@ Convert a collection into new object defined by path for key and value.
 ### Examples
 
 ```javascript
-toObject('a', 'b', [{a: 'a1', b: 'b2'}]) // => { a1: 'b1' }
+toObject('a', 'b', [{a: 'a1', b: 'b2'}]) // => { a1: 'b2' }
 ```
 
 Returns **[Object][65]** New object that is similar to map(getValue), keyBy(getKey).

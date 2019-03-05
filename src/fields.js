@@ -38,7 +38,7 @@ export const selector = cond([
  * @param {string|Array|Function} getValue The path used for key creation.
  * @param {any} collection The thing used for value of key.
  * @returns {Object} New object that is similar to map(getValue), keyBy(getKey).
- * @example toObject('a', 'b', [{a: 'a1', b: 'b2'}]) // => { a1: 'b1' }
+ * @example toObject('a', 'b', [{a: 'a1', b: 'b2'}]) // => { a1: 'b2' }
  */
 export const toObject = curry((getKey, getValue, collection) => fromPairs(
   map(over([selector(getKey), selector(getValue)]), collection),
