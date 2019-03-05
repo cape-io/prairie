@@ -1,7 +1,8 @@
 import {
-  at, cond, constant, curry, curryN, find, get, has, identity,
-  isEmpty, isFunction, isString, isUndefined,
-  mapValues, rearg, reduce, set, stubTrue, unset, update,
+  at, cond, constant, curry, curryN, every, find, fromPairs, get, has, identity,
+  isArray, isEmpty, isFunction, isString, isUndefined, map,
+  mapValues, over, overEvery, overSome, rearg, reduce,
+  set, stubTrue, unset, update,
 } from 'lodash/fp'
 import overBranch from 'understory/lib/overBranch'
 import { doProp } from './transform'
@@ -23,6 +24,25 @@ const transform = reduce.convert({ cap: false })
  * @example createObj('baz', { a: 1 }) // => { baz: { a: 1 } }
  */
 export const createObj = curry((path, value) => set(path, value, {}))
+
+export const isStringArray = overEvery([isArray, every(isString)])
+export const selector = cond([
+  [overSome([isString, isStringArray]), get],
+  [isFunction, identity],
+  [stubTrue, constant],
+])
+
+/**
+ * Convert a collection into new object defined by path for key and value.
+ * @param {string|Array|Function} getKey The path used for key creation.
+ * @param {string|Array|Function} getValue The path used for key creation.
+ * @param {any} collection The thing used for value of key.
+ * @returns {Object} New object that is similar to map(getValue), keyBy(getKey).
+ * @example toObject('a', 'b', [{a: 'a1', b: 'b2'}]) // => { a1: 'b1' }
+ */
+export const toObject = curry((getKey, getValue, collection) => fromPairs(
+  map(over([selector(getKey), selector(getValue)]), collection),
+))
 
 /**
  * Rearranged `_.set` args to `setIn(path, object, value)`
@@ -233,11 +253,6 @@ export const renameFields = curry(
   ),
 )
 export const moveFields = renameFields
-export const selector = cond([
-  [isString, get],
-  [isFunction, identity],
-  [stubTrue, constant],
-])
 
 /**
  * Return the first truthy value of paths.

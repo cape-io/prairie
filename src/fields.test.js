@@ -1,7 +1,7 @@
 import _ from 'lodash/fp'
 import {
   copy, createObj, findAt, getFields, mergeWith, move, moveAll,
-  renameFields, updateTo, updateToWhen,
+  renameFields, toObject, updateTo, updateToWhen,
 } from './fields'
 
 /* globals describe test expect */
@@ -20,7 +20,34 @@ describe('createObj', () => {
     expect(createObj('foo.bar', 'happy')).toEqual({ foo: { bar: 'happy' } })
   })
 })
-
+describe('toObject', () => {
+  const collection = [
+    { a: 'a1', b: 'b1', c: 'c1' },
+    { a: 'a2', b: 'b2', c: 'c2' },
+    { a: 'a3', b: 'b3', c: 'c3' },
+  ]
+  const obj = {
+    a1: 'c1',
+    a2: 'c2',
+    a3: 'c3',
+  }
+  test('creates new obj from (key, val) string args', () => {
+    expect(toObject('a', 'c', collection)).toEqual(obj)
+  })
+  test('creates new obj from (key, val) array args', () => {
+    expect(toObject(['a'], ['c'], collection)).toEqual(obj)
+  })
+  test('creates new obj from (key, val) func args', () => {
+    expect(toObject(_.get('a'), _.get('c'), collection)).toEqual(obj)
+  })
+  test('creates new obj with all same values', () => {
+    expect(toObject('a', 2, collection)).toEqual({
+      a1: 2,
+      a2: 2,
+      a3: 2,
+    })
+  })
+})
 describe('move', () => {
   const mover = move('foo', 'bar')
   test('calling with only two props should return func', () => {
