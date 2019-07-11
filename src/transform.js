@@ -39,7 +39,6 @@ export const hasMethodOf = doPropOf(isFunction)
 /**
  * Replace entire item if has field. Transformer given value at path.
  * @type {Function}
- * @example hasMethodAt(path)(object)
  */
 export const transformHas = curry((path, transformer, item) => (
   has(path, item) ? doProp(transformer, path, item) : null
