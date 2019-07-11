@@ -31,7 +31,7 @@
   "homepage": "https://github.com/cape-io/prairie",
   "dependencies": {
     "lodash": "^4.17.14",
-    "understory": "^1.7.0"
+    "understory": "^1.7.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
