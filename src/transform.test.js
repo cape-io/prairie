@@ -44,6 +44,7 @@ describe('transformHas', () => {
   test('Like doProp but only if path found', () => {
     const func = transformHas('auth.foo', _.toUpper)
     expect(func({ auth: { foo: 'bar' } })).toBe('BAR')
-    expect(func({ baz: 'bar' })).toBe(null)
+    const obj = { baz: 'bar' }
+    expect(func(obj)).toBe(obj)
   })
 })

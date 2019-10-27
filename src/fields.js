@@ -1,10 +1,10 @@
 import {
   at, cond, constant, curry, curryN, every, find, fromPairs, get, has, identity,
-  isArray, isEmpty, isFunction, isString, isUndefined, map,
+  isArray, isFunction, isString, isUndefined, map,
   mapValues, over, overEvery, overSome, rearg, reduce,
   set, stubTrue, unset, update,
 } from 'lodash/fp'
-import overBranch from 'understory/lib/overBranch'
+import { getThunk, isWorthless, onTrue } from 'understory'
 import { doProp } from './transform'
 
 const transform = reduce.convert({ cap: false })
@@ -87,8 +87,8 @@ export const setField = curry((path, transformer, item) => set(
  * @param {Function} transformer Transformer given entire item. Return value set at path.
  * @param {Object} item The item to update field on.
  */
-export const addField = curry((path, transformer) => overBranch(
-  doProp(isEmpty, path), setField(path, transformer),
+export const addField = curry((path, transformer) => onTrue(
+  doProp(isWorthless, path), setField(path, getThunk(transformer)),
 ))
 
 /**
@@ -98,16 +98,16 @@ export const addField = curry((path, transformer) => overBranch(
  * @param {Object} item The item to update field on.
  * @returns {Object} Item with `path` updated with result of `transformer`.
  */
-export const setFieldHas = curry((path, transformer) => overBranch(
+export const setFieldHas = curry((path, transformer) => onTrue(
   has(path), setField(path, transformer),
 ))
 
 /**
  * Replace field only if found. Transformer gets field value.
- * Probably just use _.update()!?
+ * Probably just use _.update() unless you want the check beforehand.
  * @function replaceField
  */
-export const replaceField = curry((path, transformer) => overBranch(
+export const replaceField = curry((path, transformer) => onTrue(
   has(path), update(path, transformer),
 ))
 
@@ -122,9 +122,9 @@ export const replaceField = curry((path, transformer) => overBranch(
  * const toArray = updateToWhen(Array, _.isPlainObject, 'foo')
  * toArray({ foo: { a: 'happy' } }) // => { foo: [{ a: 'happy' }] }
  */
-export const updateToWhen = curry((transformer, boolCheck, path, item) => overBranch(
-  doProp(boolCheck, path), update(path, transformer),
-)(item))
+export const updateToWhen = curry((transformer, boolCheck, path, item) => onTrue(
+  doProp(boolCheck, path), update(path, transformer), item,
+))
 
 /**
  * Rearranged _.update args to transformer, path, item

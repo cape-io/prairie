@@ -1,11 +1,34 @@
 import _ from 'lodash/fp'
 import {
-  copy, createObj, findAt, getFields, mergeWith, move, moveAll,
+  addField, copy, createObj, findAt, getFields, mergeWith, move, moveAll,
   renameFields, toObject, updateTo, updateToWhen,
 } from './fields'
 
 /* globals describe test expect */
 
+describe('addField', () => {
+  const func = addField('foo', 'bar')
+  test('adds value to field if object does not have one', () => {
+    const obj1 = { foo: 'happy' }
+    expect(func(obj1)).toBe(obj1)
+    expect(func({ baz: true })).toEqual({ baz: true, foo: 'bar' })
+  })
+  const func2 = addField('bar', ({ a, b }) => a + b)
+  test('works with a transformer', () => {
+    const obj1 = {
+      foo: 'happy', a: 1, b: 3, bar: 0,
+    }
+    expect(func2(obj1))
+      .toEqual({
+        a: 1, b: 3, foo: 'happy', bar: 4,
+      })
+    obj1.bar = 2
+    expect(func2(obj1))
+      .toEqual({
+        a: 1, b: 3, foo: 'happy', bar: 2,
+      })
+  })
+})
 describe('copy', () => {
   const copier = copy('foo', 'bar')
   test('copies prop from foo to new prop bar', () => {
@@ -55,6 +78,10 @@ describe('move', () => {
   })
   test('moves prop from foo to bar', () => {
     expect(mover({ foo: 'happy', baz: 'b' })).toEqual({ bar: 'happy', baz: 'b' })
+  })
+  test('move item from array', () => {
+    expect(move('desc[0]', 'name', { desc: ['foo', 'bar'] }))
+      .toEqual({ name: 'foo', desc: [undefined, 'bar'] })
   })
 })
 describe('moveAll', () => {
