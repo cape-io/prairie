@@ -174,9 +174,7 @@ export const mergeFields = curry((transformer, item) => ({
  * @param {Object} item Object that values of source will be applied.
  * @returns {Object} Merged result of `surce` on top of `item`.
  */
-export const mergeWith = curry((source, item) => Object.assign(
-  {}, item, source,
-))
+export const mergeWith = curry((source, item) => ({ ...item, ...source }))
 
 /**
  * Replace item. Transformer given value of withId property.
@@ -275,5 +273,5 @@ export const findAt = curry((getPaths, item) => find(identity, at(getPaths, item
  * getFields({bar: 'foo'})({ foo: 'happy'}) // => { bar: 'happy' }
  */
 export const getFields = curry(
-  (structuredSelector, item) => mapValues(val => selector(val)(item), structuredSelector),
+  (structuredSelector, item) => mapValues((val) => selector(val)(item), structuredSelector),
 )

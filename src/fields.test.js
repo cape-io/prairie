@@ -28,6 +28,10 @@ describe('addField', () => {
         a: 1, b: 3, foo: 'happy', bar: 2,
       })
   })
+  test('priority', () => {
+    const addPriority = addField('priority', 'getPriority')
+    expect(addPriority({})).toEqual({ priority: 'getPriority' })
+  })
 })
 describe('copy', () => {
   const copier = copy('foo', 'bar')
