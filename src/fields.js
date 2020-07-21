@@ -144,11 +144,10 @@ export const updateTo = curry(
  * @param {Function} transformer Transformer given value of withId property.
  * @returns {ItemTransformer} Result of transformer set at `field` `item`.
  */
-export const updateWith = curry((path, withId, transformer, item) => setField(
+export const setFieldWith = curry((path, withId, transformer, item) => setField(
   path, doProp(transformer, withId), item,
 ))
-export const setFieldWith = updateWith
-export const setWith = updateWith
+export const setWith = setFieldWith
 
 /**
  * Replace item with result of transformer.
