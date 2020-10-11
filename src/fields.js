@@ -4,7 +4,9 @@ import {
   mapValues, over, overEvery, overSome, rearg, reduce,
   set, stubTrue, unset, update,
 } from 'lodash/fp'
-import { getThunk, isWorthless, onTrue } from 'understory'
+import {
+  getThunk, isWorthless, isValue, onTrue,
+} from 'understory'
 import { doProp } from './transform'
 
 const transform = reduce.convert({ cap: false })
@@ -259,7 +261,7 @@ export const moveFields = renameFields
  * @example findAt(['c', 'b', 'a'])({ a: 'foo', b: 'bar', c: null }) // => 'bar'
  * @example findAt(['c', 'b', 'a'])({ a: 'foo', b: false, c: '' }) // => 'foo'
  */
-export const findAt = curry((getPaths, item) => find(identity, at(getPaths, item)))
+export const findAt = curry((getPaths, item) => find(isValue, at(getPaths, item)))
 
 /**
  * Return an object with same keys as object argument.
