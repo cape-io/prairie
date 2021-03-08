@@ -171,7 +171,7 @@ Rearranged \_.update args to transformer, path, item
 
 Returns **[Object][65]** Item with transformer applied to property at `path`.
 
-## updateWith
+## setFieldWith
 
 Set field on item. Transformer given value of withId property.
 

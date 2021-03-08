@@ -50,7 +50,7 @@ export const toObject = curry((getKey, getValue, collection) => fromPairs(
  * Rearranged `_.set` args to `setIn(path, object, value)`
  * @type {function}
  * @param {string} path The path of the property to replace.
- * @param {Function} object The object that to set value on.
+ * @param {Object} object The object that to set value on.
  * @param {any} value The value to place on path.
  * @returns {Object} New object with `value` set at `path`.
  * @example setIn('foo', {}, 'bar') // => { foo: 'bar' }
