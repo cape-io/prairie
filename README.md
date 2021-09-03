@@ -1,3 +1,7 @@
+# Prairie
+
+**Version 4 is ESM.**
+
 Add new fields/properties to an object based on the values of existing properties.
 
 Composable utility functions that make it easy to edit/replace properties of objects. For best results learn about `_.flow()` and read the [Lodash FP Guide](https://github.com/lodash/lodash/wiki/FP-Guide).

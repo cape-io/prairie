@@ -1,8 +1,8 @@
-import _ from 'lodash/fp'
+import _ from 'lodash/fp.js'
 import {
-  addField, copy, createObj, findAt, getFields, mergeWith, move, moveAll,
+  addField, copy, createObj, findAt, findValueAt, getFields, mergeWith, move, moveAll,
   renameFields, toObject, updateTo, updateToWhen,
-} from './fields'
+} from './fields.js'
 
 /* globals describe test expect */
 
@@ -107,6 +107,13 @@ describe('moveFields', () => {
   })
 })
 
+describe('findAt', () => {
+  test('finds first truthy path', () => {
+    const getFirst = findValueAt(['c', 'b', 'a'])
+    expect(getFirst({ a: 'foo', b: 'bar', c: null })).toBe(null)
+    expect(getFirst({ a: 'foo', b: false, c: '' })).toBe(false)
+  })
+})
 describe('findAt', () => {
   test('finds first truthy path', () => {
     const getFirst = findAt(['c', 'b', 'a'])

@@ -1,13 +1,15 @@
+import _ from 'lodash/fp.js'
 import {
+  getThunk, isWorthless, isValue, onTrue,
+} from 'understory'
+import { doProp } from './transform.js'
+
+const {
   at, cond, constant, curry, curryN, every, find, fromPairs, get, has, identity,
   isArray, isFunction, isString, isUndefined, map,
   mapValues, over, overEvery, overSome, rearg, reduce,
   set, stubTrue, unset, update,
-} from 'lodash/fp'
-import {
-  getThunk, isWorthless, isValue, onTrue,
-} from 'understory'
-import { doProp } from './transform'
+} = _
 
 const transform = reduce.convert({ cap: false })
 
@@ -254,6 +256,16 @@ export const renameFields = curry(
 export const moveFields = renameFields
 
 /**
+ * Return the first value of paths. 0, null, and false are valid values.
+ * @param {Array} getPaths An array of source paths.
+ * @param {Object} item The item to look for values on.
+ * @returns {any} The first truthy value found at one of the `getPaths`.
+ * @example findAt(['c', 'b', 'a'])({ a: 'foo', b: 'bar', c: null }) // => null
+ * @example findAt(['c', 'b', 'a'])({ a: 'foo', b: false, c: '' }) // => false
+ */
+export const findValueAt = curry((getPaths, item) => find(isValue, at(getPaths, item)))
+
+/**
  * Return the first truthy value of paths.
  * @param {Array} getPaths An array of source paths.
  * @param {Object} item The item to look for values on.
@@ -261,7 +273,7 @@ export const moveFields = renameFields
  * @example findAt(['c', 'b', 'a'])({ a: 'foo', b: 'bar', c: null }) // => 'bar'
  * @example findAt(['c', 'b', 'a'])({ a: 'foo', b: false, c: '' }) // => 'foo'
  */
-export const findAt = curry((getPaths, item) => find(isValue, at(getPaths, item)))
+export const findAt = curry((getPaths, item) => find(identity, at(getPaths, item)))
 
 /**
  * Return an object with same keys as object argument.

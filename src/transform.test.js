@@ -1,7 +1,7 @@
-import _ from 'lodash/fp'
+import _ from 'lodash/fp.js'
 import {
   doProp, doPropOf, hasMethodAt, hasMethodOf, transformHas,
-} from './transform'
+} from './transform.js'
 
 const fonop = { foo: _.noop }
 /* globals describe test expect */

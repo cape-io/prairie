@@ -1,6 +1,8 @@
-import {
+import _ from 'lodash/fp.js'
+
+const {
   curry, get, has, isFunction, propertyOf,
-} from 'lodash/fp'
+} = _
 
 /**
  * Return result of calling transformer with property value at path.

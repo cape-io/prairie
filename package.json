@@ -2,16 +2,21 @@
   "name": "prairie",
   "version": "3.12.2",
   "description": "Add/Modify fields on an object with composable functions.",
-  "main": "lib/index.js",
+  "exports": "./index.js",
+  "engines": {
+    "node": "^14.13.1 || >=16.0.0"
+  },
+  "type": "module",
   "scripts": {
-    "compile": "babel src --out-dir lib",
     "docs": "documentation build src/index.js -f md -o API.md",
-    "prepublish": "npm run compile",
-    "test": "jest --watch"
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --watch"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/cape-io/prairie.git"
+  },
+  "jest": {
+    "transform": {}
   },
   "keywords": [
     "lodash",
@@ -31,19 +36,14 @@
   "homepage": "https://github.com/cape-io/prairie",
   "dependencies": {
     "lodash": "^4.17.21",
-    "understory": "^1.13.1"
+    "understory": "^2.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.0",
-    "@babel/core": "^7.13.8",
-    "@babel/preset-env": "^7.13.9",
-    "babel-plugin-add-module-exports": "^1.0.4",
-    "babel-plugin-lodash": "^3.3.4",
-    "documentation": "^13.1.1",
-    "eslint": "^7.21.0",
+    "documentation": "^13.2.5",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-lodash-fp": "^2.2.0-a1",
-    "jest": "^26.6.3"
+    "jest": "^27.1.0"
   }
 }
