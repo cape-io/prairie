@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "docs": "documentation build src/index.js -f md -o API.md",
+    "docs": "documentation build index.js -f md -o API.md",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --watch"
   },
   "repository": {
