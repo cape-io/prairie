@@ -1,6 +1,6 @@
 {
   "name": "prairie",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Add/Modify fields on an object with composable functions.",
   "exports": "./index.js",
   "engines": {
@@ -9,6 +9,7 @@
   "type": "module",
   "scripts": {
     "docs": "documentation build index.js -f md -o API.md",
+    "preinstall": "npx only-allow pnpm",
     "test": "node --experimental-vm-modules node_modules/.bin/jest --watch"
   },
   "repository": {
@@ -42,8 +43,8 @@
     "documentation": "^13.2.5",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-lodash-fp": "^2.2.0-a1",
-    "jest": "^27.1.0"
+    "jest": "^27.4.7"
   }
 }
