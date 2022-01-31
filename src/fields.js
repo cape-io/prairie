@@ -78,7 +78,7 @@ export const setState = set.convert({ rearg: false })
  * Set field. Like `_.update` but transformer is given the entire item instead of only the field.
  * @param {string} path The path of the property to replace.
  * @param {Function} transformer Transformer given entire item. Return value set at path.
- * @param {Object} item The item to update field on.
+ * @param {Object} item The item to add or replace field on.
  * @returns {Object} Item with `path` updated with result of `transformer`.
  */
 export const setField = curry((path, transformer, item) => set(
@@ -87,7 +87,7 @@ export const setField = curry((path, transformer, item) => set(
 
 /**
  * Set field like `setField` but only if it's value is empty.
- * @param {string} path The path of the property to replace.
+ * @param {string} path The path of the property to set.
  * @param {Function} transformer Transformer given entire item. Return value set at path.
  * @param {Object} item The item to update field on.
  */
@@ -104,6 +104,18 @@ export const addField = curry((path, transformer) => onTrue(
  */
 export const setFieldHas = curry((path, transformer) => onTrue(
   has(path), setField(path, transformer),
+))
+
+/**
+ * Set field when boolCheck is true. Otherwise return item untouched.
+ * @param {string} path The path of the property to set.
+ * @param {Function} transformer Transformer given entire item. Should return value of path.
+ * @param {Function} boolCheck A function that returns true when field should be set.
+ * @param {Object} item The item to update field on.
+ * @returns {Object} Item with `path` updated with result of `transformer`.
+ */
+export const setFieldWhen = curry((path, transformer, boolCheck, item) => onTrue(
+  boolCheck(item), setField(path, transformer, item), item,
 ))
 
 /**
@@ -151,6 +163,7 @@ export const updateTo = curry(
 export const setFieldWith = curry((path, withId, transformer, item) => setField(
   path, doProp(transformer, withId), item,
 ))
+// Note that setWith is a different lodash function.
 export const setWith = setFieldWith
 
 /**
@@ -190,6 +203,8 @@ export const mergeFieldsWith = curry((withId, transformer, item) => ({
   ...item,
   ...doProp(transformer, withId, item),
 }))
+
+// export const mergeFieldsWithWhen
 
 /**
  * Copy value of getPath to setPath only if getPath finds something.
