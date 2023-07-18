@@ -10,7 +10,7 @@
   "scripts": {
     "docs": "documentation build index.js -f md -o API.md",
     "preinstall": "npx only-allow pnpm",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest --watch"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
   },
   "repository": {
     "type": "git",
@@ -37,14 +37,14 @@
   "homepage": "https://github.com/cape-io/prairie",
   "dependencies": {
     "lodash": "^4.17.21",
-    "understory": "^2.0.2"
+    "understory": "^2.0.3"
   },
   "devDependencies": {
-    "documentation": "^13.2.5",
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "documentation": "^14.0.2",
+    "eslint": "^8.45.0",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-lodash-fp": "2.2.0-a1",
-    "jest": "^27.5.1"
+    "jest": "^29.6.1"
   }
 }

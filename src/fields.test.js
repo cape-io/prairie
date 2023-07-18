@@ -1,7 +1,7 @@
 import _ from 'lodash/fp.js'
 import {
   addField, copy, createObj, findAt, findValueAt, getFields, mergeWith, move, moveAll,
-  renameFields, toObject, updateTo, updateToWhen,
+  renameFields, setFieldWhen, toObject, updateTo, updateToWhen,
 } from './fields.js'
 
 /* globals describe test expect */
@@ -140,6 +140,12 @@ describe('mergeWith', () => {
   test('apply 1st arg ontop of 2nd arg', () => {
     expect(mergeWith({ a: 'foo', b: 'bar' })({ b: 'baz', c: '' }))
       .toEqual({ a: 'foo', b: 'bar', c: '' })
+  })
+})
+describe('setFieldWhen', () => {
+  test('set field when true', () => {
+    expect(setFieldWhen('weight', _.constant(0), _.stubTrue, { a: 'foo' }))
+      .toEqual({ a: 'foo', weight: 0 })
   })
 })
 

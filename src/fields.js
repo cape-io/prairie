@@ -115,7 +115,7 @@ export const setFieldHas = curry((path, transformer) => onTrue(
  * @returns {Object} Item with `path` updated with result of `transformer`.
  */
 export const setFieldWhen = curry((path, transformer, boolCheck, item) => onTrue(
-  boolCheck(item), setField(path, transformer, item), item,
+  boolCheck, setField(path, transformer), item,
 ))
 
 /**
